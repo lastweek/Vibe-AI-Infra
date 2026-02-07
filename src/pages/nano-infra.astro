@@ -30,20 +30,20 @@ categories.sort((a, b) =>
     </p>
   </div>
 
-  <div class="cards-section">
-    <div class="section-header">
-      <h2>Projects Overview</h2>
-      <p class="section-subtitle">Quick view of all nano infrastructure projects</p>
-    </div>
-    <ProjectCards categories={categories} client:load />
-  </div>
-
   <div class="table-section">
     <div class="section-header">
       <h2>Projects Table</h2>
       <p class="section-subtitle">Detailed project tracking and status</p>
     </div>
     <ProjectsTable categories={categories} client:load />
+  </div>
+
+  <div class="cards-section">
+    <div class="section-header">
+      <h2>Projects Overview</h2>
+      <p class="section-subtitle">Quick view of all nano infrastructure projects</p>
+    </div>
+    <ProjectCards categories={categories} client:load />
   </div>
 
   <footer class="footer">
@@ -345,18 +345,11 @@ categories.sort((a, b) =>
     padding: 0 20px 60px;
   }
 
-  /* Container */
-  :global(.container) {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
-  }
-
   /* Table */
   :global(.table-wrapper) {
     background: white;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
@@ -367,16 +360,16 @@ categories.sort((a, b) =>
   }
 
   :global(.projects-table thead) {
-    background: var(--primary-light);
-    border-bottom: 1px solid var(--border);
+    background: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
   }
 
   :global(.projects-table th) {
-    padding: 16px 24px;
+    padding: 8px 16px;
     text-align: left;
     font-weight: 600;
-    font-size: 0.75rem;
-    color: white;
+    font-size: 0.7rem;
+    color: #666;
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -394,7 +387,7 @@ categories.sort((a, b) =>
   }
 
   :global(.projects-table tbody tr) {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
     transition: background 0.15s ease;
   }
@@ -404,7 +397,7 @@ categories.sort((a, b) =>
   }
 
   :global(.projects-table tbody tr.selected) {
-    background: #f5f3ff;
+    background: #f5f5f5;
   }
 
   :global(.projects-table tbody tr:last-child) {
@@ -412,49 +405,57 @@ categories.sort((a, b) =>
   }
 
   :global(.projects-table td) {
-    padding: 20px 24px;
+    padding: 8px 16px;
+    vertical-align: middle;
   }
 
-  :global(.category-badge) {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--primary-light);
-    color: white;
-    border-radius: 6px;
+  :global(.category-cell) {
+    width: 15%;
+    padding: 0;
+    background: #fafafa;
+    border-right: 1px solid #f0f0f0;
+  }
+
+  :global(.category-cell .category-badge) {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    color: #555;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    text-align: center;
+    background: #f0f0f0;
   }
 
   :global(.project-cell) {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   :global(.project-name) {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.875rem;
     color: var(--primary);
   }
 
   :global(.github-link) {
-    color: var(--muted);
-    transition: all 0.15s;
+    color: #999;
+    transition: color 0.15s;
     display: flex;
     align-items: center;
   }
 
   :global(.github-link:hover) {
     color: var(--accent);
-    transform: scale(1.1);
   }
 
   :global(.description-cell) {
-    color: #525252;
-    font-size: 0.9375rem;
-    line-height: 1.6;
+    color: #666;
+    font-size: 0.8125rem;
+    line-height: 1.4;
   }
 
   /* Modal */
