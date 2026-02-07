@@ -40,9 +40,26 @@ npm run pre-push      # Validate before pushing
 npm run push          # Validate and push safely
 ```
 
+## Configuration Notes
+
+### Base Path Configuration (`astro.config.mjs`)
+
+The `base` path in Astro config must match your GitHub Pages deployment:
+
+- **Custom subdomain** (e.g., `vibe-ai-infra.lastweek.io`): Use `base: '/'`
+- **GitHub user/org pages** (e.g., `username.github.io`): Use `base: '/'`
+- **Project pages** (e.g., `username.github.io/repo-name`): Use `base: '/repo-name/'`
+
+**Current setup:** This site uses a custom subdomain, so `base: '/'`
+
+When changing deployment type, ALWAYS update:
+1. `astro.config.mjs` - the `base` property
+2. All internal links - if changing to/from project pages
+
 ## Why This Matters
 
 - Catches TypeScript errors before they reach GitHub Actions
 - Saves time by failing fast locally instead of on CI
 - Ensures the main branch always builds successfully
 - Prevents broken deployments to production
+- Avoids 404 errors from incorrect base path configuration
