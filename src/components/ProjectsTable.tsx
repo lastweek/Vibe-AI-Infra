@@ -125,7 +125,9 @@ export default function ProjectsTable({ categories }: { categories: CategoryData
             <div className="modal-header">
               <div>
                 <h2>{selectedProject.name}</h2>
-                <span className="modal-category">{selectedProject.category}</span>
+                <span className="modal-category" data-category={selectedProject.category}>
+                  {selectedProject.category}
+                </span>
               </div>
               <button
                 className="close-button"

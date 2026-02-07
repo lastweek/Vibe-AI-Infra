@@ -231,28 +231,28 @@ categories.sort((a, b) =>
   }
 
   :global(.category-badge.silicon) {
-    background: #fef3c7;
-    color: #92400e;
+    background: #f3e8ff;
+    color: #7c3aed;
   }
 
   :global(.category-badge.virt) {
-    background: #dbeafe;
-    color: #1e40af;
+    background: #e0f2fe;
+    color: #0891b2;
   }
 
   :global(.category-badge.compiler) {
     background: #fce7f3;
-    color: #9f1239;
+    color: #be185d;
   }
 
   :global(.category-badge.framework) {
     background: #dcfce7;
-    color: #166534;
+    color: #047857;
   }
 
   :global(.category-badge.agent) {
     background: #e0e7ff;
-    color: #3730a3;
+    color: #4f46e5;
   }
 
   :global(.status-badge) {
@@ -392,12 +392,33 @@ categories.sort((a, b) =>
     transition: background 0.15s ease;
   }
 
+  /* Category row backgrounds */
+  :global(.projects-table tbody tr.category-silicon) {
+    background: #faf5ff;
+  }
+
+  :global(.projects-table tbody tr.category-virt) {
+    background: #f0f9ff;
+  }
+
+  :global(.projects-table tbody tr.category-compiler) {
+    background: #fdf2f8;
+  }
+
+  :global(.projects-table tbody tr.category-framework) {
+    background: #f0fdf4;
+  }
+
+  :global(.projects-table tbody tr.category-agent) {
+    background: #eef2ff;
+  }
+
   :global(.projects-table tbody tr:hover) {
-    background: #fafafa;
+    filter: brightness(0.98);
   }
 
   :global(.projects-table tbody tr.selected) {
-    background: #f5f5f5;
+    filter: brightness(0.95);
   }
 
   :global(.projects-table tbody tr:last-child) {
@@ -412,21 +433,63 @@ categories.sort((a, b) =>
   :global(.category-cell) {
     width: 15%;
     padding: 0;
-    background: #fafafa;
     border-right: 1px solid #f0f0f0;
+  }
+
+  :global(.category-silicon .category-cell) {
+    background: #f3e8ff;
+  }
+
+  :global(.category-virt .category-cell) {
+    background: #e0f2fe;
+  }
+
+  :global(.category-compiler .category-cell) {
+    background: #fce7f3;
+  }
+
+  :global(.category-framework .category-cell) {
+    background: #dcfce7;
+  }
+
+  :global(.category-agent .category-cell) {
+    background: #e0e7ff;
   }
 
   :global(.category-cell .category-badge) {
     display: block;
     width: 100%;
     padding: 8px 16px;
-    color: #555;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-align: center;
-    background: #f0f0f0;
+  }
+
+  :global(.category-silicon .category-badge) {
+    background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+    color: white;
+  }
+
+  :global(.category-virt .category-badge) {
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+    color: white;
+  }
+
+  :global(.category-compiler .category-badge) {
+    background: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+    color: white;
+  }
+
+  :global(.category-framework .category-badge) {
+    background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+    color: white;
+  }
+
+  :global(.category-agent .category-badge) {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
   }
 
   :global(.project-cell) {
@@ -517,13 +580,37 @@ categories.sort((a, b) =>
   :global(.modal-category) {
     display: inline-block;
     padding: 4px 12px;
-    background: var(--primary-light);
-    color: white;
     border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+  }
+
+  /* Modal category badge colors - match table badges */
+  :global(.modal-category[data-category="Silicon"]) {
+    background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+    color: white;
+  }
+
+  :global(.modal-category[data-category="Virt"]) {
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+    color: white;
+  }
+
+  :global(.modal-category[data-category="Compiler"]) {
+    background: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+    color: white;
+  }
+
+  :global(.modal-category[data-category="Framework"]) {
+    background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+    color: white;
+  }
+
+  :global(.modal-category[data-category="Agent"]) {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
   }
 
   :global(.close-button) {
