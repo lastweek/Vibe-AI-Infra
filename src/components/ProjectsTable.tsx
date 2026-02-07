@@ -6,6 +6,7 @@ interface Project {
   description: string;
   goals?: string[];
   status: 'TBD' | 'WIP' | 'Done';
+  category?: string;
 }
 
 interface CategoryData {
