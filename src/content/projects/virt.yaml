@@ -2,17 +2,23 @@ category: Virt
 projects:
   - name: Nano KVM
     repo: vibe-kvm
-    description: Educational KVM implementation featuring Intel VT-x virtualization with EPT memory management, Virtio device emulation (block, network), and SR-IOV device assignment. Covers complete VM lifecycle from VMXON/VMCS setup to VM entry/exit handling.
+    description: Educational implementation of the Linux KVM API for learning Intel VT-x virtualization at the hardware level.
+    goals:
+      - Complete VMX operation (VMXON, VMCS management, VM entry/exit)
+      - EPT memory virtualization with 4-level paging
+      - Virtio device framework (block and network devices)
+      - SR-IOV device assignment for high-performance I/O
+      - Comprehensive documentation and examples
     status: WIP
   - name: Nano VMM
     repo: vibe-vmm
-    description: Minimal multi-architecture VMM supporting x86_64 (Linux KVM, macOS HVF) and ARM64 (macOS Apple Silicon). Features complete VM lifecycle management, Virtio device emulation (console, block, network), SR-IOV VF passthrough, and clean hypervisor abstraction layer.
+    description: Minimal Virtual Machine Monitor (VMM) in C with clean hypervisor abstraction for cross-platform VM execution.
     goals:
-      - Cross-platform VM execution (Linux KVM, macOS HVF)
-      - Virtio device framework (console, block, network)
-      - SR-IOV VF passthrough via VFIO
-      - Clean hypervisor abstraction for portability
-      - Comprehensive documentation and examples
+      - Multi-architecture support (x86_64 Linux KVM, x86_64/ARM64 macOS HVF)
+      - Complete VM lifecycle management (create, run, destroy VMs)
+      - Virtio device emulation (console, block, network)
+      - SR-IOV VF passthrough via VFIO for device assignment
+      - Comprehensive documentation and test kernels
     status: Done
   - name: Nano Container
     description: Lightweight container runtime for isolation and resource management.
