@@ -1,0 +1,153 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Serving Cost Analysis - Vibe Insights">
+  <div class="page-container">
+    <div class="page-header">
+      <a href="/Vibe-AI-Infra/insights" class="back-link">← Back to Insights</a>
+      <h1>Serving Cost Analysis</h1>
+      <p class="subtitle">
+        Analyze and optimize the cost of serving AI models in production.
+      </p>
+    </div>
+
+    <div class="placeholder">
+      <div class="placeholder-icon">💰</div>
+      <h2>Cost Optimization Tool</h2>
+      <p class="placeholder-description">
+        Compare different deployment strategies, hardware configurations, and scaling approaches
+        to minimize your AI serving costs while maintaining performance.
+      </p>
+      <div class="features">
+        <div class="feature">
+          <h3>Cost Calculator</h3>
+          <p>Estimate serving costs across different cloud providers and hardware options</p>
+        </div>
+        <div class="feature">
+          <h3>Performance vs Cost</h3>
+          <p>Trade-off analysis between latency, throughput, and infrastructure costs</p>
+        </div>
+        <div class="feature">
+          <h3>Scaling Strategies</h3>
+          <p>Optimize auto-scaling policies and resource allocation for cost efficiency</p>
+        </div>
+      </div>
+      <div class="status-badge">Under Development</div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  .page-header {
+    margin-bottom: 60px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 24px;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #6366f1 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.125rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .placeholder {
+    text-align: center;
+    padding: 80px 40px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+
+  .placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: 24px;
+  }
+
+  .placeholder h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+
+  .placeholder-description {
+    font-size: 1.125rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 48px;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+    margin-bottom: 48px;
+    text-align: left;
+  }
+
+  .feature h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .feature p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent);
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .placeholder {
+      padding: 60px 24px;
+    }
+
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

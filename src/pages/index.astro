@@ -1,68 +1,126 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ProjectsTable from '../components/ProjectsTable';
-import { getCollection } from 'astro:content';
-
-// Get all project data files
-const projectEntries = await getCollection('projects');
-
-// Transform into the format the component expects
-const categories = projectEntries.map(entry => ({
-  category: entry.data.category,
-  projects: entry.data.projects
-}));
-
-// Sort categories by a predefined order
-const categoryOrder = ['Silicon', 'Virt', 'Compiler', 'Framework', 'Agent'];
-categories.sort((a, b) =>
-  categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category)
-);
 ---
 
-<Layout title="Vibing Nano AI Infrastructure">
-  <div class="hero">
-    <div class="badge">Open Source Infrastructure</div>
-    <h1>Vibing Nano AI Infrastructure</h1>
-    <p class="subtitle">
-      Building essential components for next-generation AI systems—small enough to understand,
-      powerful enough to change the world.
-    </p>
+<Layout title="Vibe AI Infrastructure">
+  <div class="landing-page">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Vibe AI Infrastructure</h1>
+        <p class="hero-subtitle">
+          Building the next generation of AI systems—from silicon to software.
+          Simple, transparent, and powerful infrastructure for the AI era.
+        </p>
+        <div class="hero-actions">
+          <a href="/Vibe-AI-Infra/nano-infra" class="btn btn-primary">
+            Explore Nano AI Infra
+          </a>
+          <a href="/Vibe-AI-Infra/insights" class="btn btn-secondary">
+            View Insights
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission">
+      <div class="section-content">
+        <h2 class="section-title">Our Mission</h2>
+        <p class="mission-text">
+          We believe AI infrastructure should be accessible, understandable, and transparent.
+          From bare-metal GPU drivers to distributed training frameworks, we're crafting
+          essential components that power the next generation of AI systems—small enough
+          to understand, powerful enough to change the world.
+        </p>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-overview">
+      <div class="section-content">
+        <h2 class="section-title">What We're Building</h2>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3 class="card-title">Nano AI Infra</h3>
+            <p class="card-description">
+              13 nano-scale infrastructure projects spanning silicon, virtualization,
+              compilers, frameworks, and AI agents.
+            </p>
+            <a href="/Vibe-AI-Infra/nano-infra" class="card-link">
+              Explore Projects →
+            </a>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">Vibe Insights</h3>
+            <p class="card-description">
+              AI-powered performance analysis, roofline models, and serving cost
+              optimization for modern AI systems.
+            </p>
+            <a href="/Vibe-AI-Infra/insights" class="card-link">
+              View Analysis →
+            </a>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🔬</div>
+            <h3 class="card-title">Research & Development</h3>
+            <p class="card-description">
+              Open-source research in system architecture, performance optimization,
+              and next-generation AI infrastructure.
+            </p>
+            <a href="https://github.com/lastweek" target="_blank" class="card-link">
+              GitHub →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">13</div>
+          <div class="stat-label">Infrastructure Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Research Areas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Open Source</div>
+        </div>
+      </div>
+    </section>
   </div>
-
-  <ProjectsTable categories={categories} client:load />
-
-  <footer class="footer">
-    <div class="footer-content">
-      <p>Built with <span class="heart">❤</span> using Astro + React</p>
-      <p class="footer-note">Tracking progress on next-generation AI infrastructure</p>
-    </div>
-  </footer>
 </Layout>
 
 <style>
+  .landing-page {
+    min-height: 100vh;
+  }
+
+  /* Hero Section */
   .hero {
+    padding: 120px 20px 80px;
     text-align: center;
-    padding: 80px 20px 60px;
-    max-width: 800px;
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+  }
+
+  .hero-content {
+    max-width: 900px;
     margin: 0 auto;
   }
 
-  .badge {
-    display: inline-block;
-    padding: 6px 16px;
-    background: var(--primary);
-    color: white;
-    border-radius: 100px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    margin-bottom: 24px;
-    letter-spacing: 0.05em;
-  }
-
-  .hero h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
+  .hero-title {
+    font-size: clamp(3rem, 10vw, 5rem);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     line-height: 1.1;
     margin-bottom: 24px;
     background: linear-gradient(135deg, #0a0a0a 0%, #6366f1 50%, #ec4899 100%);
@@ -71,318 +129,199 @@ categories.sort((a, b) =>
     background-clip: text;
   }
 
-  .subtitle {
+  .hero-subtitle {
+    font-size: 1.375rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto 40px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  }
+
+  .btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Mission Section */
+  .mission {
+    padding: 80px 20px;
+    background: white;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    color: var(--primary);
+  }
+
+  .mission-text {
     font-size: 1.25rem;
     color: var(--muted);
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto;
+    line-height: 1.8;
   }
 
-  .footer {
-    border-top: 1px solid var(--border);
-    margin-top: 80px;
-    padding: 40px 20px;
-    text-align: center;
+  /* Projects Overview */
+  .projects-overview {
+    padding: 100px 20px;
+    background: linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
   }
 
-  .footer-content p {
-    color: var(--muted);
-    font-size: 0.875rem;
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 48px;
   }
 
-  .heart {
-    color: #ec4899;
-  }
-
-  .footer-note {
-    margin-top: 8px;
-  }
-
-  /* Container */
-  :global(.container) {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
-  }
-
-  /* Table */
-  :global(.table-wrapper) {
+  .card {
     background: white;
     border: 1px solid var(--border);
     border-radius: 16px;
-    overflow: hidden;
+    padding: 40px 32px;
+    transition: all 0.3s;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
-  :global(.projects-table) {
-    width: 100%;
-    border-collapse: collapse;
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent);
   }
 
-  :global(.projects-table thead) {
-    background: var(--primary-light);
-    border-bottom: 1px solid var(--border);
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
   }
 
-  :global(.projects-table th) {
-    padding: 16px 24px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  :global(.projects-table th:first-child) {
-    width: 15%;
-  }
-
-  :global(.projects-table th:nth-child(2)) {
-    width: 25%;
-  }
-
-  :global(.projects-table th:last-child) {
-    width: 60%;
-  }
-
-  :global(.projects-table tbody tr) {
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s ease;
-  }
-
-  :global(.projects-table tbody tr:hover) {
-    background: #fafafa;
-  }
-
-  :global(.projects-table tbody tr.selected) {
-    background: #f5f3ff;
-  }
-
-  :global(.projects-table tbody tr:last-child) {
-    border-bottom: none;
-  }
-
-  :global(.projects-table td) {
-    padding: 20px 24px;
-  }
-
-  :global(.category-badge) {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--primary-light);
-    color: white;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  :global(.project-cell) {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  :global(.project-name) {
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--primary);
-  }
-
-  :global(.github-link) {
-    color: var(--muted);
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-  }
-
-  :global(.github-link:hover) {
-    color: var(--accent);
-    transform: scale(1.1);
-  }
-
-  :global(.description-cell) {
-    color: #525252;
-    font-size: 0.9375rem;
-    line-height: 1.6;
-  }
-
-  /* Modal */
-  :global(.modal-overlay) {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-    animation: fadeIn 0.15s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  :global(.modal-content) {
-    background: white;
-    border-radius: 20px;
-    max-width: 600px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    animation: slideUp 0.2s ease;
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  :global(.modal-header) {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 32px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  :global(.modal-header h2) {
-    font-size: 1.75rem;
+  .card-title {
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary);
-    margin: 0 0 8px 0;
-  }
-
-  :global(.modal-category) {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--primary-light);
-    color: white;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  :global(.close-button) {
-    background: var(--border);
-    border: none;
-    color: var(--muted);
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 8px 12px;
-    line-height: 1;
-    border-radius: 8px;
-    transition: all 0.15s;
-    font-weight: 500;
-  }
-
-  :global(.close-button:hover) {
-    background: var(--primary);
-    color: white;
-  }
-
-  :global(.modal-body) {
-    padding: 32px;
-  }
-
-  :global(.modal-description) {
-    color: #525252;
-    line-height: 1.7;
-    font-size: 1rem;
-    margin-bottom: 24px;
-  }
-
-  :global(.modal-goals h4) {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
     margin-bottom: 12px;
   }
 
-  :global(.modal-goals ul) {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 24px 0;
-  }
-
-  :global(.modal-goals li) {
-    padding: 10px 0;
-    padding-left: 28px;
-    position: relative;
-    color: #525252;
-    font-size: 0.9375rem;
+  .card-description {
+    font-size: 1.0625rem;
+    color: var(--muted);
     line-height: 1.6;
+    margin-bottom: 24px;
   }
 
-  :global(.modal-goals li::before) {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: bold;
-  }
-
-  :global(.modal-repo-link) {
+  .card-link {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: var(--primary);
-    color: white !important;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    transition: all 0.15s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 4px;
   }
 
-  :global(.modal-repo-link:hover) {
-    background: var(--accent);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-    transform: translateY(-1px);
-    text-decoration: none !important;
+  .card-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Stats Section */
+  .stats {
+    padding: 80px 20px;
+    background: white;
+    border-top: 1px solid var(--border);
+  }
+
+  .stats-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 500;
   }
 
   @media (max-width: 768px) {
     .hero {
-      padding: 60px 20px 40px;
+      padding: 80px 20px 60px;
     }
 
-
-    :global(.projects-table th),
-    :global(.projects-table td) {
-      padding: 16px;
+    .hero-subtitle {
+      font-size: 1.125rem;
     }
 
-    :global(.modal-content) {
-      margin: 20px;
+    .section-title {
+      font-size: 2rem;
     }
 
-    :global(.modal-header),
-    :global(.modal-body) {
-      padding: 24px;
+    .cards-grid {
+      grid-template-columns: 1fr;
     }
 
-    :global(.modal-header h2) {
-      font-size: 1.5rem;
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .stat-number {
+      font-size: 3rem;
     }
   }
 </style>

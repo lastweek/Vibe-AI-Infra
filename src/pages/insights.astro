@@ -1,0 +1,276 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Vibe Insights - AI Infrastructure Analysis">
+  <div class="insights-page">
+    <!-- Header -->
+    <div class="page-header">
+      <h1>Vibe Insights</h1>
+      <p class="subtitle">
+        AI-powered performance analysis and optimization tools for modern AI infrastructure.
+      </p>
+    </div>
+
+    <!-- Analysis Cards -->
+    <div class="analysis-grid">
+      <!-- Roofline Analysis Card -->
+      <a href="/Vibe-AI-Infra/insights/roofline" class="analysis-card">
+        <div class="card-header">
+          <div class="card-icon">📊</div>
+          <h2 class="card-title">Roofline Analysis</h2>
+        </div>
+        <p class="card-description">
+          Visualize compute vs. memory-bound performance across different hardware architectures.
+          Identify bottlenecks and optimize your AI workloads with interactive roofline models.
+        </p>
+        <div class="card-footer">
+          <span class="card-status">Coming Soon</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Serving Cost Analysis Card -->
+      <a href="/Vibe-AI-Infra/insights/serving-cost" class="analysis-card">
+        <div class="card-header">
+          <div class="card-icon">💰</div>
+          <h2 class="card-title">Serving Cost Analysis</h2>
+        </div>
+        <p class="card-description">
+          Analyze and optimize the cost of serving AI models in production.
+          Compare different deployment strategies, hardware configurations, and scaling approaches.
+        </p>
+        <div class="card-footer">
+          <span class="card-status">Coming Soon</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- More Coming Card -->
+      <div class="analysis-card coming-soon">
+        <div class="card-header">
+          <div class="card-icon">🚀</div>
+          <h2 class="card-title">More Analysis Tools</h2>
+        </div>
+        <p class="card-description">
+          We're actively developing more insights and analysis tools.
+          Stay tuned for performance profiling, optimization recommendations, and more.
+        </p>
+        <div class="card-footer">
+          <span class="card-status">Planned</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="section-content">
+        <h3>About Vibe Insights</h3>
+        <p>
+          Vibe Insights provides data-driven analysis and visualization tools to help you understand
+          and optimize your AI infrastructure. From architectural performance modeling to cost optimization,
+          we're building tools that make AI infrastructure more transparent and accessible.
+        </p>
+        <div class="features-list">
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>Interactive visualizations</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>Hardware-specific analysis</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>Cost optimization insights</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>Open-source and extensible</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .insights-page {
+    min-height: 100vh;
+  }
+
+  .page-header {
+    text-align: center;
+    padding: 80px 20px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #6366f1 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .analysis-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 32px;
+  }
+
+  .analysis-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .analysis-card:not(.coming-soon):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent);
+  }
+
+  .analysis-card.coming-soon {
+    opacity: 0.7;
+    cursor: default;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .card-description {
+    font-size: 1.0625rem;
+    color: var(--muted);
+    line-height: 1.7;
+    flex-grow: 1;
+    margin-bottom: 24px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-status {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  .card-arrow {
+    font-size: 1.25rem;
+    color: var(--accent);
+    transition: transform 0.2s;
+  }
+
+  .analysis-card:not(.coming-soon):hover .card-arrow {
+    transform: translateX(4px);
+  }
+
+  .about-section {
+    background: white;
+    border-top: 1px solid var(--border);
+    padding: 80px 20px;
+    margin-top: 60px;
+  }
+
+  .section-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .about-section h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+  }
+
+  .about-section p {
+    font-size: 1.125rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .features-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.0625rem;
+    color: var(--primary);
+    font-weight: 500;
+  }
+
+  .feature-icon {
+    color: var(--success);
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .analysis-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .features-list {
+      grid-template-columns: 1fr;
+    }
+
+    .page-header {
+      padding: 60px 20px 40px;
+    }
+  }
+</style>
