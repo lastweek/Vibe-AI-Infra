@@ -35,6 +35,7 @@ categories.sort((a, b) =>
     <div class="footer-content">
       <p>Built with <span class="heart">❤</span> using Astro + React</p>
       <p class="footer-note">Tracking progress on next-generation AI infrastructure</p>
+      <p class="footer-author">Viber: <a href="https://github.com/lastweek" target="_blank">Yizhou Shan</a></p>
     </div>
   </footer>
 </Layout>
@@ -97,6 +98,21 @@ categories.sort((a, b) =>
 
   .footer-note {
     margin-top: 8px;
+  }
+
+  .footer-author {
+    margin-top: 8px;
+    font-size: 0.875rem;
+  }
+
+  .footer-author a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer-author a:hover {
+    text-decoration: underline;
   }
 
   /* Container */
