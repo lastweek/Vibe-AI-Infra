@@ -1,0 +1,11 @@
+category: Silicon
+projects:
+  - name: Nano GPU
+    description: SIMT + DSA architecture providing Scalar, Vector, Cube / Memory ISA APIs with Linux kernel drivers.
+    goals:
+      - Provide SIMT + DSA architecture
+      - Provide Scalar, Vector, Cube / Memory ISA APIs
+      - Has Linux kernel drivers
+      - Has test code
+      - Eventually hook into our torch
+    status: TBD

@@ -1,0 +1,20 @@
+category: Framework
+projects:
+  - name: Nano Collective
+    description: Distributed collective communication operations for training.
+    status: TBD
+  - name: Nano Torch
+    description: Deep learning framework with PyTorch-like API.
+    goals:
+      - Able to train a simple transformer module
+      - Able to run on the CPU backend, possibly the vibe-gpu
+    status: WIP
+  - name: Nano Megatron
+    description: Large-scale distributed training framework inspired by Megatron.
+    status: TBD
+  - name: Nano Serving
+    description: Model serving and inference optimization system.
+    status: TBD
+  - name: Nano AReal
+    description: Analog computing and real-time processing framework.
+    status: TBD

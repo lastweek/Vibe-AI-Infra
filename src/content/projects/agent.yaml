@@ -1,0 +1,5 @@
+category: Agent
+projects:
+  - name: Nano OpenCode
+    description: AI-powered code generation and analysis agent.
+    status: TBD

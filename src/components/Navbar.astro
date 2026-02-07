@@ -1,0 +1,62 @@
+---
+const currentPage = Astro.url.pathname;
+---
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/Vibe-AI-Infra/" class={`nav-link ${currentPage === '/Vibe-AI-Infra/' || currentPage === '/Vibe-AI-Infra' ? 'active' : ''}`}>
+      Projects
+    </a>
+    <a href="/Vibe-AI-Infra/roofline" class={`nav-link ${currentPage.includes('roofline') ? 'active' : ''}`}>
+      Roofline Analysis
+    </a>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    border-bottom: 1px solid var(--border);
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 32px;
+  }
+
+  .nav-link {
+    padding: 16px 0;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .nav-link:hover {
+    color: var(--primary);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      gap: 16px;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      padding: 12px 0;
+    }
+  }
+</style>

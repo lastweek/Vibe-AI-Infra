@@ -1,0 +1,19 @@
+category: Virt
+projects:
+  - name: Nano KVM
+    repo: vibe-kvm
+    description: Nano KVM virtualization for modern hardware.
+    status: WIP
+  - name: Nano VMM
+    repo: vibe-vmm
+    description: Nano VMM - Virtual Machine Monitor for KVM/HV APIs.
+    goals:
+      - Able to start VM using KVM/HV APIs
+      - Able to handle basic console print
+      - Able to handle SR-IOV device
+      - Able to run cross-platform (ARM64 and x86_64)
+      - Include basic kernel image
+    status: Done
+  - name: Nano Container
+    description: Lightweight container runtime for isolation and resource management.
+    status: WIP
