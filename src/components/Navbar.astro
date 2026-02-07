@@ -4,13 +4,13 @@ const currentPage = Astro.url.pathname;
 
 <nav class="navbar">
   <div class="nav-container">
-    <a href="/Vibe-AI-Infra/" class={`nav-link ${currentPage === '/Vibe-AI-Infra/' || currentPage === '/Vibe-AI-Infra' ? 'active' : ''}`}>
+    <a href="/" class={`nav-link ${currentPage === '/' ? 'active' : ''}`}>
       Home
     </a>
-    <a href="/Vibe-AI-Infra/nano-infra" class={`nav-link ${currentPage.includes('nano-infra') ? 'active' : ''}`}>
+    <a href="/nano-infra" class={`nav-link ${currentPage.includes('nano-infra') ? 'active' : ''}`}>
       Nano AI Infra
     </a>
-    <a href="/Vibe-AI-Infra/insights" class={`nav-link ${currentPage.includes('insights') ? 'active' : ''}`}>
+    <a href="/insights" class={`nav-link ${currentPage.includes('insights') ? 'active' : ''}`}>
       Vibe Insights
     </a>
   </div>
