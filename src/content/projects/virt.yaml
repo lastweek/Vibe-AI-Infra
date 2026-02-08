@@ -1,6 +1,6 @@
 category: Virt
 projects:
-  - name: Nano KVM
+  - name: Vibe KVM
     repo: vibe-kvm
     description: Educational implementation of the Linux KVM API for learning Intel VT-x virtualization at the hardware level.
     goals:
@@ -10,7 +10,7 @@ projects:
       - SR-IOV device assignment for high-performance I/O
       - Comprehensive documentation and examples
     status: WIP
-  - name: Nano VMM
+  - name: Vibe VMM
     repo: vibe-vmm
     description: Minimal Virtual Machine Monitor (VMM) in C with clean hypervisor abstraction for cross-platform VM execution.
     goals:

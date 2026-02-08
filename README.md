@@ -1,48 +1,61 @@
 # Vibe AI Infra
 
-Hub for Nano AI Infrastructure projects - tracking progress across silicon, virtualization, compilers, frameworks, and AI agents.
+Vibe AI Infra is an Astro site for infrastructure work spanning silicon, virtualization, compilers, frameworks, and AI agents.
 
-## Projects
+## Stack
 
-This hub tracks 13 projects across 5 categories:
+- Astro 4 + TypeScript
+- React islands for interactive project views
+- Astro content collections for markdown-driven pages and insights
 
-- **Silicon**: Nano GPU (SIMT + DSA architecture)
-- **Virt**: Nano KVM, Nano Container
-- **Compiler**: Nano TVM, Nano MLIR, Nano TileLang, Nano KernelGen
-- **Framework**: Nano Collective, Nano Torch, Nano Megatron, Nano Serving, Nano AReal
-- **Agent**: Nano OpenCode
+## Local Development
 
-## Development
-
-Install dependencies:
 ```bash
 npm install
-```
-
-Run development server:
-```bash
 npm run dev
 ```
 
-Build for production:
+Key scripts:
+
 ```bash
-npm run build
+npm run check      # astro check --no-build
+npm run build      # production build
+npm run ci         # check + build
+npm run pre-push   # local pre-push validation
+npm run push       # validate then git push
 ```
 
-Preview production build:
-```bash
-npm run preview
-```
+## Content Model
 
-## Updating Project Status
+### Nano projects data
 
-Edit `src/projects.ts` to update project information. Each project has:
+Edit YAML files in `src/content/projects/`:
 
-- `status`: `'TBD'` | `'WIP'` | `'Done'`
-- `github`: GitHub repo name (optional, links to `github.com/lastweek/<repo>`)
-- `description`: Brief project description
-- `goals`: Array of specific project goals
+- `silicon.yaml`
+- `virt.yaml`
+- `compiler.yaml`
+- `framework.yaml`
+- `agent.yaml`
+
+### Markdown subpages
+
+Add markdown files in `src/content/pages/`:
+
+- `src/content/pages/about.md` -> `/about`
+- `src/content/pages/roadmap.md` -> `/roadmap`
+- nested files map to nested URLs
+
+### Markdown insights
+
+Add markdown files in `src/content/insights/`:
+
+- `src/content/insights/roofline.md` -> `/insights/roofline`
+- `src/content/insights/serving-cost.md` -> `/insights/serving-cost`
 
 ## Deployment
 
-The site is configured for GitHub Pages deployment. Build outputs to `dist/` and can be served from GitHub Pages or any static host.
+GitHub Actions deploys on push to `main` via `.github/workflows/deploy.yml`:
+
+1. `npm ci`
+2. `npm run ci`
+3. deploy `dist/` to GitHub Pages

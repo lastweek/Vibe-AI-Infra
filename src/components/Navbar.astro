@@ -1,65 +1,100 @@
 ---
 const currentPage = Astro.url.pathname;
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/nano-infra', label: 'Vibe Nano' },
+  { href: '/insights', label: 'Vibe Insights' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') return currentPage === '/';
+  return currentPage === href || currentPage.startsWith(`${href}/`);
+};
 ---
 
 <nav class="navbar">
-  <div class="nav-container">
-    <a href="/" class={`nav-link ${currentPage === '/' ? 'active' : ''}`}>
-      Home
-    </a>
-    <a href="/nano-infra" class={`nav-link ${currentPage.includes('nano-infra') ? 'active' : ''}`}>
-      Vibe Nano
-    </a>
-    <a href="/insights" class={`nav-link ${currentPage.includes('insights') ? 'active' : ''}`}>
-      Vibe Insights
-    </a>
+  <div class="nav-inner">
+    <a href="/" class="brand">Vibe AI Infra</a>
+    <div class="nav-links">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`nav-link ${isActive(item.href) ? 'active' : ''}`}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
   </div>
 </nav>
 
 <style>
   .navbar {
-    border-bottom: 1px solid var(--border);
-    background: white;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 20;
+    border-bottom: 1px solid rgba(15, 28, 46, 0.08);
+    background: rgba(249, 251, 255, 0.86);
+    backdrop-filter: blur(10px);
   }
 
-  .nav-container {
-    max-width: 1200px;
+  .nav-inner {
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 12px 20px;
     display: flex;
-    gap: 32px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .nav-link {
-    padding: 16px 0;
     color: var(--muted);
-    font-weight: 500;
-    font-size: 0.9375rem;
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
+    font-size: 0.88rem;
+    padding: 0.42rem 0.68rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
   }
 
   .nav-link:hover {
-    color: var(--primary);
+    border-color: var(--line);
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.72);
   }
 
   .nav-link.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+    color: var(--ink);
+    border-color: rgba(37, 99, 235, 0.4);
+    background: rgba(37, 99, 235, 0.1);
   }
 
-  @media (max-width: 768px) {
-    .nav-container {
-      gap: 16px;
+  @media (max-width: 760px) {
+    .nav-inner {
+      align-items: flex-start;
+      flex-direction: column;
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
-    .nav-link {
-      font-size: 0.875rem;
-      padding: 12px 0;
+    .nav-links {
+      width: 100%;
+      justify-content: flex-start;
     }
   }
 </style>

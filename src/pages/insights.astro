@@ -1,276 +1,266 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AutoToc from '../components/AutoToc.astro';
+import { getCollection } from 'astro:content';
+
+const insights = await getCollection('insights', ({ data }) => !data.draft);
+const statusOrder = { published: 0, active: 1, planned: 2 };
+
+insights.sort((a, b) => {
+  const statusDiff = statusOrder[a.data.status] - statusOrder[b.data.status];
+  if (statusDiff !== 0) return statusDiff;
+  return a.data.title.localeCompare(b.data.title);
+});
+
+const statusLabel = {
+  published: 'Published',
+  active: 'In Progress',
+  planned: 'Planned',
+};
+
+const insightLinks = insights.map((entry) => ({
+  title: entry.data.title,
+  href: `/insights/${entry.slug}`,
+}));
 ---
 
-<Layout title="Vibe Insights - AI Infrastructure Analysis">
-  <div class="insights-page">
-    <!-- Header -->
-    <div class="page-header">
-      <h1>Vibe Insights</h1>
-      <p class="subtitle">
-        AI-powered performance analysis and optimization tools for modern AI infrastructure.
-      </p>
-    </div>
+<Layout title="Vibe Insights | Vibe AI Infra" description="Performance and cost analysis for AI infrastructure">
+  <main class="insights-shell reveal">
+    <aside class="side-rail">
+      <AutoToc rootSelector=".main-content" itemSelector="[data-toc]" />
 
-    <!-- Analysis Cards -->
-    <div class="analysis-grid">
-      <!-- Roofline Analysis Card -->
-      <a href="/insights/roofline" class="analysis-card">
-        <div class="card-header">
-          <div class="card-icon">📊</div>
-          <h2 class="card-title">Roofline Analysis</h2>
-        </div>
-        <p class="card-description">
-          Visualize compute vs. memory-bound performance across different hardware architectures.
-          Identify bottlenecks and optimize your AI workloads with interactive roofline models.
-        </p>
-        <div class="card-footer">
-          <span class="card-status">Coming Soon</span>
-          <span class="card-arrow">→</span>
-        </div>
-      </a>
-
-      <!-- Serving Cost Analysis Card -->
-      <a href="/insights/serving-cost" class="analysis-card">
-        <div class="card-header">
-          <div class="card-icon">💰</div>
-          <h2 class="card-title">Serving Cost Analysis</h2>
-        </div>
-        <p class="card-description">
-          Analyze and optimize the cost of serving AI models in production.
-          Compare different deployment strategies, hardware configurations, and scaling approaches.
-        </p>
-        <div class="card-footer">
-          <span class="card-status">Coming Soon</span>
-          <span class="card-arrow">→</span>
-        </div>
-      </a>
-
-      <!-- More Coming Card -->
-      <div class="analysis-card coming-soon">
-        <div class="card-header">
-          <div class="card-icon">🚀</div>
-          <h2 class="card-title">More Analysis Tools</h2>
-        </div>
-        <p class="card-description">
-          We're actively developing more insights and analysis tools.
-          Stay tuned for performance profiling, optimization recommendations, and more.
-        </p>
-        <div class="card-footer">
-          <span class="card-status">Planned</span>
-        </div>
+      <div class="toc-card">
+        <p class="toc-title">Insights</p>
+        <nav class="toc-list">
+          {insightLinks.map((item) => (
+            <a href={item.href}>{item.title}</a>
+          ))}
+        </nav>
       </div>
-    </div>
+    </aside>
 
-    <!-- About Section -->
-    <section class="about-section">
-      <div class="section-content">
-        <h3>About Vibe Insights</h3>
+    <div class="main-content">
+      <header class="insights-header" id="overview" data-toc data-toc-label="Overview">
+        <span class="eyebrow">Analysis</span>
+        <h1>Vibe Insights</h1>
         <p>
-          Vibe Insights provides data-driven analysis and visualization tools to help you understand
-          and optimize your AI infrastructure. From architectural performance modeling to cost optimization,
-          we're building tools that make AI infrastructure more transparent and accessible.
+          Engineering notes on performance modeling, workload bottlenecks, and serving economics.
         </p>
-        <div class="features-list">
-          <div class="feature-item">
-            <span class="feature-icon">✓</span>
-            <span>Interactive visualizations</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">✓</span>
-            <span>Hardware-specific analysis</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">✓</span>
-            <span>Cost optimization insights</span>
-          </div>
-          <div class="feature-item">
-            <span class="feature-icon">✓</span>
-            <span>Open-source and extensible</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+      </header>
+
+      <section class="insights-grid" id="insight-library" data-toc data-toc-label="Insight Library">
+        {insights.map((entry) => (
+          <a class="insight-card" href={`/insights/${entry.slug}`}>
+            <div class="insight-top">
+              <h2>{entry.data.title}</h2>
+              <span class={`status ${entry.data.status}`}>{statusLabel[entry.data.status]}</span>
+            </div>
+            <p>{entry.data.description}</p>
+            {entry.data.tags.length > 0 && (
+              <div class="tag-row">
+                {entry.data.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+            <span class="jump">Read insight</span>
+          </a>
+        ))}
+      </section>
+    </div>
+  </main>
 </Layout>
 
 <style>
-  .insights-page {
-    min-height: 100vh;
+  .insights-shell {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 20px 100px;
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 20px;
   }
 
-  .page-header {
-    text-align: center;
-    padding: 80px 20px 60px;
-    max-width: 800px;
-    margin: 0 auto;
+  .side-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .toc-card {
+    position: sticky;
+    top: 82px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .toc-card + .toc-card {
+    top: 218px;
+  }
+
+  .toc-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 380px;
+    overflow: auto;
+  }
+
+  .toc-list a {
+    font-size: 0.84rem;
+    color: var(--ink-soft);
+    padding: 0.3rem 0.45rem;
+    border-radius: 8px;
+  }
+
+  .toc-list a:hover {
+    background: #eef4ff;
+    color: var(--ink);
+  }
+
+  .insights-header {
+    max-width: 760px;
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-size: 0.72rem;
   }
 
   h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    font-weight: 800;
+    font-family: var(--font-display);
     letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    background: linear-gradient(135deg, #0a0a0a 0%, #6366f1 50%, #ec4899 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    line-height: 1.05;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
   }
 
-  .subtitle {
-    font-size: 1.25rem;
+  .insights-header p {
+    margin-top: 12px;
     color: var(--muted);
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: 1.03rem;
+    line-height: 1.72;
   }
 
-  .analysis-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
+  .insights-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 32px;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
-  .analysis-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 40px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  .insight-card {
     display: flex;
     flex-direction: column;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
   }
 
-  .analysis-card:not(.coming-soon):hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  .insight-card:hover {
+    transform: translateY(-2px);
     border-color: var(--accent);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
   }
 
-  .analysis-card.coming-soon {
-    opacity: 0.7;
-    cursor: default;
-  }
-
-  .card-header {
+  .insight-top {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .card-icon {
-    font-size: 2.5rem;
-    line-height: 1;
-  }
-
-  .card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0;
-  }
-
-  .card-description {
-    font-size: 1.0625rem;
-    color: var(--muted);
-    line-height: 1.7;
-    flex-grow: 1;
-    margin-bottom: 24px;
-  }
-
-  .card-footer {
-    display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-  }
-
-  .card-status {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--accent);
-    background: rgba(99, 102, 241, 0.1);
-    padding: 6px 12px;
-    border-radius: 6px;
-  }
-
-  .card-arrow {
-    font-size: 1.25rem;
-    color: var(--accent);
-    transition: transform 0.2s;
-  }
-
-  .analysis-card:not(.coming-soon):hover .card-arrow {
-    transform: translateX(4px);
-  }
-
-  .about-section {
-    background: white;
-    border-top: 1px solid var(--border);
-    padding: 80px 20px;
-    margin-top: 60px;
-  }
-
-  .section-content {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .about-section h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 20px;
-  }
-
-  .about-section p {
-    font-size: 1.125rem;
-    color: var(--muted);
-    line-height: 1.8;
-    margin-bottom: 32px;
-  }
-
-  .features-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-
-  .feature-item {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    font-size: 1.0625rem;
-    color: var(--primary);
-    font-weight: 500;
   }
 
-  .feature-icon {
-    color: var(--success);
-    font-weight: bold;
-    font-size: 1.25rem;
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    letter-spacing: -0.01em;
   }
 
-  @media (max-width: 768px) {
-    .analysis-grid {
+  .status {
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.24rem 0.55rem;
+    white-space: nowrap;
+  }
+
+  .status.published {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .status.active {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .status.planned {
+    background: #fff4d7;
+    color: #8a4b08;
+  }
+
+  .insight-card p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.68;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .tag {
+    font-size: 0.71rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  .jump {
+    margin-top: auto;
+    padding-top: 16px;
+    color: var(--accent);
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .insights-shell {
       grid-template-columns: 1fr;
     }
 
-    .features-list {
-      grid-template-columns: 1fr;
+    .side-rail {
+      order: 2;
     }
 
-    .page-header {
-      padding: 60px 20px 40px;
+    .toc-card,
+    .toc-card + .toc-card {
+      position: static;
+    }
+
+    .toc-list {
+      max-height: none;
     }
   }
 </style>

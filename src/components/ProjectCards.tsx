@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 interface Project {
   name: string;
   repo?: string;
@@ -7,6 +5,7 @@ interface Project {
   goals?: string[];
   status: 'TBD' | 'WIP' | 'Done';
   category?: string;
+  href?: string;
 }
 
 interface CategoryData {
@@ -15,18 +14,10 @@ interface CategoryData {
 }
 
 export default function ProjectCards({ categories }: { categories: CategoryData[] }) {
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-
   // Flatten all projects
   const allProjects = categories.flatMap(cat =>
     cat.projects.map(p => ({ ...p, category: cat.category }))
   );
-
-  const statusColors = {
-    TBD: 'bg-gray-100 text-gray-700',
-    WIP: 'bg-blue-100 text-blue-700',
-    Done: 'bg-green-100 text-green-700'
-  };
 
   const categoryIcons: { [key: string]: string } = {
     'Silicon': '⚡',
@@ -44,7 +35,13 @@ export default function ProjectCards({ categories }: { categories: CategoryData[
             <div className="card-header">
               <div className="card-icon">{categoryIcons[project.category] || '📦'}</div>
               <div className="card-title-section">
-                <h3 className="card-title">{project.name}</h3>
+                <h3 className="card-title">
+                  {project.href ? (
+                    <a href={project.href} className="card-title-link">{project.name}</a>
+                  ) : (
+                    project.name
+                  )}
+                </h3>
                 <div className="card-meta">
                   <span className={`category-badge ${project.category?.toLowerCase()}`}>
                     {project.category}
@@ -76,6 +73,11 @@ export default function ProjectCards({ categories }: { categories: CategoryData[
 
             {project.repo && (
               <div className="card-footer">
+                {project.href && (
+                  <a href={project.href} className="details-link">
+                    Why + What
+                  </a>
+                )}
                 <a
                   href={`https://github.com/lastweek/${project.repo}`}
                   target="_blank"

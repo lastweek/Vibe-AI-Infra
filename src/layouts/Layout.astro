@@ -2,62 +2,109 @@
 import Navbar from '../components/Navbar.astro';
 
 interface Props {
-	title?: string;
+  title?: string;
+  description?: string;
 }
 
-const { title = 'Vibe AI Infra' } = Astro.props;
+const {
+  title = 'Vibe AI Infra',
+  description = 'Nano-scale infrastructure for AI systems',
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Nano-scale infrastructure for AI systems" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<Navbar />
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <Navbar />
+    <slot />
+  </body>
 </html>
 
 <style is:global>
-	:root {
-		--primary: #0a0a0a;
-		--primary-light: #171717;
-		--accent: #6366f1;
-		--accent-hover: #4f46e5;
-		--success: #22c55e;
-		--warning: #f59e0b;
-		--muted: #737373;
-		--border: #e5e5e5;
-		--bg-gradient: linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
-	}
+  :root {
+    --font-display: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+    --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+    --ink: #0f1c2e;
+    --ink-soft: #2b3a4f;
+    --muted: #5f6f85;
+    --line: #dce5f1;
+    --surface: #ffffff;
+    --accent: #2563eb;
+    --accent-hover: #1e4ec7;
+    --bg: #f3f7fd;
+    /* Compatibility aliases for existing component/page styles */
+    --primary: var(--ink);
+    --primary-light: var(--ink-soft);
+    --border: var(--line);
+    --success: #15803d;
+    --warning: #b45309;
+  }
 
-	* {
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-	}
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-	body {
-		font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-		background: var(--bg-gradient);
-		color: var(--primary);
-		line-height: 1.6;
-		min-height: 100vh;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
+  html,
+  body {
+    min-height: 100%;
+  }
 
-	a {
-		color: inherit;
-		text-decoration: none;
-	}
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 10% 12%, rgba(37, 99, 235, 0.14), transparent 34%),
+      radial-gradient(circle at 90% 18%, rgba(14, 165, 233, 0.14), transparent 38%),
+      linear-gradient(180deg, #f9fbff 0%, var(--bg) 100%);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: radial-gradient(#000 0.4px, transparent 0.4px);
+    background-size: 4px 4px;
+    z-index: -1;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .reveal {
+    animation: reveal-up 420ms ease both;
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 </style>

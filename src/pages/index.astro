@@ -2,326 +2,179 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Vibe AI Infrastructure">
-  <div class="landing-page">
-    <!-- Hero Section -->
+<Layout
+  title="Vibe AI Infrastructure"
+  description="Learn AGI infrastructure through Vibe learning with Vibe Nano and Vibe Insights."
+>
+  <main class="landing reveal">
     <section class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">Vibe AI Infrastructure</h1>
-        <p class="hero-subtitle">
-          Building the next generation of AI systems—from silicon to software.
-          Simple, transparent, and powerful infrastructure for the AI era.
+      <p class="eyebrow">Learn AGI Infrastructure via Vibe Learning</p>
+      <h1>Vibe AI Infrastructure</h1>
+      <p class="hero-copy">
+        Vibe AI Infra is a learning-first infrastructure program for the AGI era. We combine
+        hands-on system building in <strong>Vibe Nano</strong> with transparent analysis in
+        <strong> Vibe Insights</strong>, so every concept links to concrete engineering work.
+      </p>
+    </section>
+
+    <section class="vision-strip">
+      <p>
+        Vision: make AGI infrastructure understandable, reproducible, and composable across
+        silicon, software, and operations.
+      </p>
+    </section>
+
+    <section class="focus-grid">
+      <a href="/nano-infra" class="focus-card nano">
+        <span class="badge">Build</span>
+        <h2>Vibe Nano</h2>
+        <p>
+          Navigate the project map, open each project page, and learn why each layer matters for AGI
+          infrastructure.
         </p>
-        <div class="hero-actions">
-          <a href="/nano-infra" class="btn btn-primary">
-            Explore Vibe Nano
-          </a>
-          <a href="/insights" class="btn btn-secondary">
-            View Insights
-          </a>
-        </div>
-      </div>
-    </section>
+        <span class="jump">Explore Projects</span>
+      </a>
 
-    <!-- Mission Section -->
-    <section class="mission">
-      <div class="section-content">
-        <h2 class="section-title">Our Mission</h2>
-        <p class="mission-text">
-          We believe AI infrastructure should be accessible, understandable, and transparent.
-          From bare-metal GPU drivers to distributed training frameworks, we're crafting
-          essential components that power the next generation of AI systems—small enough
-          to understand, powerful enough to change the world.
+      <a href="/insights" class="focus-card insights">
+        <span class="badge">Analyze</span>
+        <h2>Vibe Insights</h2>
+        <p>
+          Study performance and cost models with practical assumptions and implementation-oriented
+          next steps.
         </p>
-      </div>
+        <span class="jump">Read Insights</span>
+      </a>
     </section>
-
-    <!-- Projects Section -->
-    <section class="projects-overview">
-      <div class="section-content">
-        <h2 class="section-title">What We're Building</h2>
-        <div class="cards-grid">
-          <div class="card">
-            <div class="card-icon">⚡</div>
-            <h3 class="card-title">Vibe Nano</h3>
-            <p class="card-description">
-              13 nano-scale infrastructure projects spanning silicon, virtualization,
-              compilers, frameworks, and AI agents.
-            </p>
-            <a href="/nano-infra" class="card-link">
-              Explore Projects →
-            </a>
-          </div>
-
-          <div class="card">
-            <div class="card-icon">📊</div>
-            <h3 class="card-title">Vibe Insights</h3>
-            <p class="card-description">
-              AI-powered performance analysis, roofline models, and serving cost
-              optimization for modern AI systems.
-            </p>
-            <a href="/insights" class="card-link">
-              View Analysis →
-            </a>
-          </div>
-
-          <div class="card">
-            <div class="card-icon">🔬</div>
-            <h3 class="card-title">Research & Development</h3>
-            <p class="card-description">
-              Open-source research in system architecture, performance optimization,
-              and next-generation AI infrastructure.
-            </p>
-            <a href="https://github.com/lastweek" target="_blank" class="card-link">
-              GitHub →
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-number">13</div>
-          <div class="stat-label">Infrastructure Projects</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">5</div>
-          <div class="stat-label">Research Areas</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">Open Source</div>
-        </div>
-      </div>
-    </section>
-  </div>
+  </main>
 </Layout>
 
 <style>
-  .landing-page {
-    min-height: 100vh;
+  .landing {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 72px 20px 98px;
   }
 
-  /* Hero Section */
   .hero {
-    padding: 120px 20px 80px;
-    text-align: center;
-    background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
-  }
-
-  .hero-content {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .hero-title {
-    font-size: clamp(3rem, 10vw, 5rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    background: linear-gradient(135deg, #0a0a0a 0%, #6366f1 50%, #ec4899 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero-subtitle {
-    font-size: 1.375rem;
-    color: var(--muted);
-    line-height: 1.7;
-    max-width: 700px;
-    margin: 0 auto 40px;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    padding: 14px 32px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: inline-block;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
-  }
-
-  .btn-primary:hover {
-    background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-  }
-
-  .btn-secondary {
-    background: white;
-    color: var(--primary);
-    border: 2px solid var(--border);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  /* Mission Section */
-  .mission {
-    padding: 80px 20px;
-    background: white;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .section-content {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    margin-bottom: 24px;
-    color: var(--primary);
-  }
-
-  .mission-text {
-    font-size: 1.25rem;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  /* Projects Overview */
-  .projects-overview {
-    padding: 100px 20px;
-    background: linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%);
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 32px;
-    margin-top: 48px;
-  }
-
-  .card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 40px 32px;
-    transition: all 0.3s;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    border-color: var(--accent);
-  }
-
-  .card-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-  }
-
-  .card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 12px;
-  }
-
-  .card-description {
-    font-size: 1.0625rem;
-    color: var(--muted);
-    line-height: 1.6;
+    max-width: 860px;
     margin-bottom: 24px;
   }
 
-  .card-link {
-    color: var(--accent);
-    font-weight: 600;
-    text-decoration: none;
+  .eyebrow {
     display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: #1e40af;
+    font-weight: 700;
   }
 
-  .card-link:hover {
-    text-decoration: underline;
+  h1 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    font-size: clamp(2.4rem, 7vw, 5.3rem);
+    max-width: 15ch;
   }
 
-  /* Stats Section */
-  .stats {
-    padding: 80px 20px;
-    background: white;
-    border-top: 1px solid var(--border);
-  }
-
-  .stats-grid {
-    max-width: 900px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
-    text-align: center;
-  }
-
-  .stat-number {
-    font-size: 3.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    margin-bottom: 12px;
-  }
-
-  .stat-label {
-    font-size: 1rem;
+  .hero-copy {
+    margin-top: 16px;
     color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.75;
+    max-width: 64ch;
+  }
+
+  .vision-strip {
+    margin-top: 20px;
+    margin-bottom: 22px;
+    max-width: 930px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid #bfdbfe;
+    background: linear-gradient(130deg, rgba(219, 234, 254, 0.75), rgba(224, 242, 254, 0.68));
+  }
+
+  .vision-strip p {
+    color: #1e3a8a;
+    font-size: 0.95rem;
+    line-height: 1.7;
     font-weight: 500;
   }
 
-  @media (max-width: 768px) {
-    .hero {
-      padding: 80px 20px 60px;
-    }
+  .focus-grid {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
 
-    .hero-subtitle {
-      font-size: 1.125rem;
-    }
+  .focus-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    border-radius: 16px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
 
-    .section-title {
-      font-size: 2rem;
-    }
+  .focus-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+  }
 
-    .cards-grid {
+  .badge {
+    display: inline-flex;
+    align-self: flex-start;
+    border-radius: 999px;
+    padding: 0.26rem 0.58rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .nano .badge {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .insights .badge {
+    background: #e0f2fe;
+    color: #075985;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    letter-spacing: -0.02em;
+  }
+
+  .focus-card p {
+    margin-top: 11px;
+    color: var(--muted);
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
+  .jump {
+    margin-top: auto;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding-top: 18px;
+  }
+
+  @media (max-width: 900px) {
+    .focus-grid {
       grid-template-columns: 1fr;
     }
 
-    .stats-grid {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-
-    .stat-number {
-      font-size: 3rem;
+    .focus-card {
+      min-height: 220px;
     }
   }
 </style>

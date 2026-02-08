@@ -1,0 +1,62 @@
+---
+interface Props {
+  title?: string;
+  rootSelector?: string;
+  itemSelector?: string;
+}
+
+const {
+  title = 'Table of Contents',
+  rootSelector = 'main',
+  itemSelector = '[data-toc]',
+} = Astro.props;
+---
+
+<div class="toc-card" data-auto-toc data-root={rootSelector} data-selector={itemSelector}>
+  <p class="toc-title">{title}</p>
+  <nav class="toc-list"></nav>
+</div>
+
+<script is:inline>
+  (() => {
+    const script = document.currentScript;
+    if (!script) return;
+    const card = script.closest('[data-auto-toc]');
+    if (!card) return;
+    const list = card.querySelector('.toc-list');
+    if (!list) return;
+
+    const build = () => {
+      const rootSelector = card.getAttribute('data-root') || 'main';
+      const selector = card.getAttribute('data-selector') || '[data-toc]';
+      const root = document.querySelector(rootSelector);
+      if (!root) return;
+
+      const items = Array.from(root.querySelectorAll(selector))
+        .map((el) => {
+          const id = el.getAttribute('id');
+          if (!id) return null;
+          const label =
+            el.getAttribute('data-toc-label') ||
+            el.querySelector('h1, h2, h3, h4')?.textContent?.trim() ||
+            id;
+          return { id, label };
+        })
+        .filter(Boolean);
+
+      list.innerHTML = '';
+      for (const item of items) {
+        const link = document.createElement('a');
+        link.href = `#${item.id}`;
+        link.textContent = item.label;
+        list.appendChild(link);
+      }
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', build, { once: true });
+    } else {
+      build();
+    }
+  })();
+</script>

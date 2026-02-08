@@ -1,0 +1,260 @@
+---
+import Layout from './Layout.astro';
+
+interface TocItem {
+  href: string;
+  label: string;
+}
+
+interface SideLinkItem {
+  href: string;
+  label: string;
+  active?: boolean;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  updated?: Date;
+  backHref?: string;
+  backLabel?: string;
+  toc?: TocItem[];
+  sideLinksTitle?: string;
+  sideLinks?: SideLinkItem[];
+}
+
+const {
+  title,
+  description,
+  eyebrow,
+  updated,
+  backHref,
+  backLabel,
+  toc = [],
+  sideLinksTitle,
+  sideLinks = [],
+} = Astro.props;
+
+const updatedLabel = updated
+  ? updated.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : null;
+
+const hasSidebar = toc.length > 0 || sideLinks.length > 0;
+---
+
+<Layout title={`${title} | Vibe AI Infra`} description={description}>
+  <main class={`content-shell reveal ${hasSidebar ? 'has-sidebar' : ''}`}>
+    {hasSidebar && (
+      <aside class="side-rail">
+        {toc.length > 0 && (
+          <div class="toc-card">
+            <p class="toc-title">Table of Contents</p>
+            <nav class="toc-list">
+              {toc.map((item) => (
+                <a href={item.href}>{item.label}</a>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        {sideLinks.length > 0 && (
+          <div class="toc-card">
+            {sideLinksTitle && <p class="toc-title">{sideLinksTitle}</p>}
+            <nav class="toc-list">
+              {sideLinks.map((item) => (
+                <a href={item.href} class={item.active ? 'active' : ''}>{item.label}</a>
+              ))}
+            </nav>
+          </div>
+        )}
+      </aside>
+    )}
+
+    <div class="content-main">
+      <header class="content-header">
+        {backHref && backLabel && (
+          <a href={backHref} class="back-link">{backLabel}</a>
+        )}
+        {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+        <h1>{title}</h1>
+        {description && <p class="description">{description}</p>}
+        {updatedLabel && <p class="updated">Updated {updatedLabel}</p>}
+      </header>
+
+      <article class="content-prose">
+        <slot />
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .content-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 20px 100px;
+  }
+
+  .content-shell.has-sidebar {
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .side-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .toc-card {
+    position: sticky;
+    top: 82px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .toc-card + .toc-card {
+    top: 248px;
+  }
+
+  .toc-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .toc-list a {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    padding: 0.3rem 0.45rem;
+    border-radius: 8px;
+  }
+
+  .toc-list a:hover {
+    background: #eef4ff;
+    color: var(--ink);
+  }
+
+  .toc-list a.active {
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-weight: 600;
+  }
+
+  .content-header {
+    margin-bottom: 40px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    color: var(--accent);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    margin-bottom: 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+  }
+
+  .description {
+    margin-top: 14px;
+    max-width: 70ch;
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+
+  .updated {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .content-prose {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 30px;
+  }
+
+  .content-prose :global(h2),
+  .content-prose :global(h3) {
+    font-family: var(--font-display);
+    margin-top: 1.8em;
+    margin-bottom: 0.45em;
+    letter-spacing: -0.01em;
+  }
+
+  .content-prose :global(p),
+  .content-prose :global(li) {
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+
+  .content-prose :global(ul),
+  .content-prose :global(ol) {
+    padding-left: 1.3rem;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .content-prose :global(code) {
+    font-size: 0.9em;
+    background: #eaf1ff;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 980px) {
+    .content-shell.has-sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    .side-rail {
+      order: 2;
+    }
+
+    .toc-card,
+    .toc-card + .toc-card {
+      position: static;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .content-shell {
+      padding-top: 36px;
+    }
+
+    .content-prose {
+      padding: 22px;
+    }
+  }
+</style>
