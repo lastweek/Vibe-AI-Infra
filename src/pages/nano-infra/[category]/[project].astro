@@ -18,39 +18,61 @@ const categoryWhy: Record<string, string> = {
 };
 
 export async function getStaticPaths() {
+  const categoryOrder = ['Silicon', 'Virt', 'Compiler', 'Framework', 'Agent'];
   const categories = await getCollection('projects');
-  const allProjects = categories.flatMap((categoryEntry) => {
-    const categorySlug = slugifySegment(categoryEntry.data.category);
-    return categoryEntry.data.projects.map((project) => ({
-      category: categoryEntry.data.category,
+
+  // Build all categories for TOC
+  const allCategories = categories.map((entry) => {
+    const categorySlug = slugifySegment(entry.data.category);
+    const projects = entry.data.projects.map((project) => {
+      return {
+        name: project.name,
+        href: `/nano-infra/${categorySlug}/${slugifySegment(project.name)}`,
+      };
+    });
+    return {
+      category: entry.data.category,
       categorySlug,
-      project,
-      projectSlug: slugifySegment(project.name),
-    }));
+      projects,
+    };
   });
 
-  const navItems = allProjects.map((item) => ({
-    label: item.project.name,
-    href: `/nano-infra/${item.categorySlug}/${item.projectSlug}`,
-  }));
+  allCategories.sort((a, b) => {
+    return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
+  });
 
-  return allProjects.map((item) => ({
-    params: {
-      category: item.categorySlug,
-      project: item.projectSlug,
-    },
-    props: {
-      project: item.project,
-      category: item.category,
-      navItems,
-      canonicalHref: `/nano-infra/${item.categorySlug}/${item.projectSlug}`,
-    },
-  }));
+  const allProjects = categories.flatMap((categoryEntry) => {
+    const categorySlug = slugifySegment(categoryEntry.data.category);
+    return categoryEntry.data.projects.map((project) => {
+      return {
+        category: categoryEntry.data.category,
+        categorySlug,
+        project,
+        projectSlug: slugifySegment(project.name),
+      };
+    });
+  });
+
+  return allProjects.map((item) => {
+    return {
+      params: {
+        category: item.categorySlug,
+        project: item.projectSlug,
+      },
+      props: {
+        project: item.project,
+        category: item.category,
+        categorySlug: item.categorySlug,
+        allCategories,
+        canonicalHref: `/nano-infra/${item.categorySlug}/${item.projectSlug}`,
+      },
+    };
+  });
 }
 
-const { project, category, navItems, canonicalHref } = Astro.props;
+const { project, category, categorySlug, allCategories, canonicalHref } = Astro.props;
 const whyLead = categoryWhy[category] ?? 'This project supports core AGI infrastructure capabilities.';
-const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
+const repoUrl = project.repo ? `https://github.com/lastweek/${project.repo}` : null;
 ---
 
 <Layout title={`${project.name} | Vibe Nano`} description={project.description}>
@@ -60,18 +82,38 @@ const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
 
       <div class="toc-card">
         <p class="toc-title">Nano Projects</p>
-        <nav class="project-nav">
-          {navItems.map((item: { label: string; href: string }) => (
-            <a href={item.href} class={item.href === canonicalHref ? 'active' : ''}>
-              {item.label}
-            </a>
+        <nav class="toc-list">
+          {allCategories.map((cat) => (
+            <div class="toc-category">
+              <a href={`/nano-infra/${cat.categorySlug}/`} class="toc-category-label">{cat.category}</a>
+              {cat.projects.map((proj) => (
+                <a href={proj.href} class={proj.href === canonicalHref ? 'active' : ''}>{proj.name}</a>
+              ))}
+            </div>
           ))}
         </nav>
       </div>
     </aside>
 
     <article class="content">
-      <a href="/nano-infra" class="back-link">← Back to Vibe Nano</a>
+      <a href={`/nano-infra/${categorySlug}/`} class="back-link">← Back to {category}</a>
+
+      {repoUrl ? (
+        <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="repo-banner">
+          <span class="repo-icon">⬡</span>
+          <div class="repo-info">
+            <span class="repo-label">Repository</span>
+            <span class="repo-name">{project.repo}</span>
+          </div>
+          <span class="repo-arrow">↗</span>
+        </a>
+      ) : (
+        <div class="tbd-banner">
+          <span class="tbd-badge">TBD</span>
+          <span class="tbd-text">Repository not yet available</span>
+        </div>
+      )}
+
       <p class="eyebrow">{category}</p>
       <h1>{project.name}</h1>
       <p class="summary">{project.description}</p>
@@ -100,21 +142,6 @@ const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
           </ul>
         </section>
       )}
-
-      <section id="status" class="section" data-toc>
-        <h2>Current Status</h2>
-        <p>
-          <span class={`status ${project.status}`}>{statusLabel}</span>
-        </p>
-        {project.repo && (
-          <p class="repo-row">
-            Repository:
-            <a href={`https://github.com/lastweek/${project.repo}`} target="_blank" rel="noopener noreferrer">
-              {project.repo} ↗
-            </a>
-          </p>
-        )}
-      </section>
     </article>
   </main>
 </Layout>
@@ -158,34 +185,53 @@ const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
     font-weight: 700;
   }
 
-  .toc-list,
-  .project-nav {
+  .toc-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-  }
-
-  .project-nav {
-    max-height: 300px;
+    gap: 12px;
+    max-height: 520px;
     overflow: auto;
-    padding-right: 2px;
   }
 
-  .toc-list a,
-  .project-nav a {
-    font-size: 0.86rem;
+  .toc-category {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .toc-category-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    padding: 0.25rem 0.45rem;
+    border-radius: 6px;
+    background: #f0f4f8;
+    text-decoration: none;
+    display: block;
+  }
+
+  .toc-category-label:hover {
+    background: #e5eef5;
+  }
+
+  .toc-list a {
+    font-size: 0.82rem;
     color: var(--ink-soft);
-    padding: 0.3rem 0.45rem;
-    border-radius: 8px;
+    padding: 0.25rem 0.45rem 0.25rem 1rem;
+    border-radius: 6px;
+    margin-left: 0.25rem;
+    text-decoration: none;
+    display: block;
   }
 
-  .toc-list a:hover,
-  .project-nav a:hover {
+  .toc-list a:hover {
     background: #eef4ff;
     color: var(--ink);
   }
 
-  .project-nav a.active {
+  .toc-list a.active {
     background: #dbeafe;
     color: #1d4ed8;
     font-weight: 600;
@@ -202,6 +248,85 @@ const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
     color: var(--accent);
     font-size: 0.9rem;
     font-weight: 500;
+  }
+
+  .repo-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border: 1px solid #3b82f6;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .repo-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
+  }
+
+  .repo-icon {
+    font-size: 1.5rem;
+    color: #60a5fa;
+  }
+
+  .repo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .repo-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #93c5fd;
+  }
+
+  .repo-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .repo-arrow {
+    font-size: 1.2rem;
+    color: #93c5fd;
+  }
+
+  .tbd-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1));
+    border: 1px solid #fbbf24;
+    border-radius: 12px;
+  }
+
+  .tbd-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.6rem;
+    background: #fbbf24;
+    color: #78350f;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tbd-text {
+    font-size: 0.9rem;
+    color: #92400e;
   }
 
   .eyebrow {
@@ -265,41 +390,6 @@ const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
     font-weight: 700;
   }
 
-  .status {
-    display: inline-flex;
-    border-radius: 999px;
-    padding: 0.3rem 0.65rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-  }
-
-  .status.Done {
-    background: #dcfce7;
-    color: #166534;
-  }
-
-  .status.WIP {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  .status.TBD {
-    background: #fff4d7;
-    color: #8a4b08;
-  }
-
-  .repo-row {
-    margin-top: 12px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .repo-row a {
-    color: var(--accent);
-    font-weight: 600;
-  }
-
   @media (max-width: 980px) {
     .detail-shell {
       grid-template-columns: 1fr;
@@ -312,9 +402,8 @@ const statusLabel = project.status === 'WIP' ? 'In Progress' : project.status;
       order: 2;
     }
 
-    .project-nav {
+    .toc-list {
       max-height: none;
-      overflow: visible;
     }
   }
 </style>

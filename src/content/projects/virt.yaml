@@ -9,7 +9,7 @@ projects:
       - Virtio device framework (block and network devices)
       - SR-IOV device assignment for high-performance I/O
       - Comprehensive documentation and examples
-    status: WIP
+    status: Done
   - name: Vibe VMM
     repo: vibe-vmm
     description: Minimal Virtual Machine Monitor (VMM) in C with clean hypervisor abstraction for cross-platform VM execution.
@@ -29,4 +29,4 @@ projects:
       - Persist structured runtime state and logs for debugging and observability
       - Maintain smoke, integration, and performance test workflows for end-to-end validation
       - Add Firecracker-based microVM execution for stronger workload sandboxing
-    status: WIP
+    status: Done

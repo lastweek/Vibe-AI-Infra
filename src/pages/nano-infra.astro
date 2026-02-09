@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import AutoToc from '../components/AutoToc.astro';
 import ProjectsTable from '../components/ProjectsTable';
-import ProjectCards from '../components/ProjectCards';
 import { getCollection } from 'astro:content';
 import { slugifySegment } from '../utils/slug';
 
@@ -12,6 +11,7 @@ const categories = projectEntries.map((entry) => {
   const categorySlug = slugifySegment(entry.data.category);
   return {
     category: entry.data.category,
+    categorySlug,
     projects: entry.data.projects.map((project) => ({
       ...project,
       href: `/nano-infra/${categorySlug}/${slugifySegment(project.name)}`,
@@ -22,12 +22,34 @@ const categories = projectEntries.map((entry) => {
 const categoryOrder = ['Silicon', 'Virt', 'Compiler', 'Framework', 'Agent'];
 categories.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
 
-const projectLinks = categories.flatMap((category) =>
-  category.projects.map((project) => ({
-    name: project.name,
-    href: project.href,
-  }))
-);
+// Stack layer descriptions
+const stackLayers = [
+  {
+    name: 'Agent',
+    description: 'AI agents that reason, plan, and execute tasks using the infrastructure layers below.',
+    color: '#dbeafe',
+  },
+  {
+    name: 'Framework',
+    description: 'Model frameworks, serving systems, and distributed training for AI workloads.',
+    color: '#e0f2fe',
+  },
+  {
+    name: 'Compiler',
+    description: 'MLIR-based compilers and code generation for optimal model execution.',
+    color: '#f0fdf4',
+  },
+  {
+    name: 'Virt',
+    description: 'Virtualization stack from hardware (KVM) through hypervisor (VMM) to containers (Sandbox) for agent isolation.',
+    color: '#fef3c7',
+  },
+  {
+    name: 'Silicon',
+    description: 'GPU architecture and design principles for understanding hardware acceleration of AI.',
+    color: '#fce7f3',
+  },
+];
 ---
 
 <Layout title="Vibe Nano | Vibe AI Infra" description="Project tracker for Vibe Nano AI infrastructure work.">
@@ -38,8 +60,13 @@ const projectLinks = categories.flatMap((category) =>
       <div class="toc-card">
         <p class="toc-title">Nano Projects</p>
         <nav class="toc-list">
-          {projectLinks.map((item) => (
-            <a href={item.href}>{item.name}</a>
+          {categories.map((category) => (
+            <div class="toc-category">
+              <a href={`/nano-infra/${category.categorySlug}/`} class="toc-category-label">{category.category}</a>
+              {category.projects.map((project) => (
+                <a href={project.href}>{project.name}</a>
+              ))}
+            </div>
           ))}
         </nav>
       </div>
@@ -50,24 +77,43 @@ const projectLinks = categories.flatMap((category) =>
         <span class="badge">Infrastructure Build Tracker</span>
         <h1>Vibe Nano</h1>
         <p class="subtitle">
-          Progress across silicon, virtualization, compilers, frameworks, and agents.
+          A vertically integrated AI infrastructure stack, from silicon through agents.
         </p>
       </header>
 
-      <section class="table-section" id="project-table" data-toc>
+      <section class="stack-visualization" id="stack" data-toc data-toc-label="Stack Layers">
         <div class="section-header">
-          <h2>Project Table</h2>
-          <p class="section-subtitle">Detailed status and descriptions</p>
+          <h2>Infrastructure Stack</h2>
+          <p class="section-subtitle">Five layers forming a complete AI infrastructure foundation</p>
         </div>
-        <ProjectsTable categories={categories} client:load />
+        <div class="stack-layers">
+          {stackLayers.map((layer, index) => (
+            <div class="stack-layer" style={`background: linear-gradient(135deg, ${layer.color} 0%, white 100%);`}>
+              <div class="layer-index">{stackLayers.length - index}</div>
+              <div class="layer-content">
+                <h3 class="layer-name">{layer.name}</h3>
+                <p class="layer-description">{layer.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="stack-note">
+          <p>
+            <strong>Why this stack?</strong> Each layer exposes the next bottleneck for AI workloads.
+            By building from silicon up, we understand hardware constraints (memory bandwidth, compute),
+            virtualization overheads (isolation, context switching), compiler optimizations (operator fusion,
+            memory tiling), framework efficiencies (kernel selection, communication patterns), and ultimately
+            agent capabilities (reasoning, tool use).
+          </p>
+        </div>
       </section>
 
-      <section class="cards-section" id="project-cards" data-toc>
+      <section class="table-section" id="project-table" data-toc>
         <div class="section-header">
-          <h2>Project Cards</h2>
-          <p class="section-subtitle">Compact overview of all active efforts</p>
+          <h2>Project Tracker</h2>
+          <p class="section-subtitle">Status and progress across all layers</p>
         </div>
-        <ProjectCards categories={categories} client:load />
+        <ProjectsTable categories={categories} client:load />
       </section>
     </div>
   </main>
@@ -114,16 +160,41 @@ const projectLinks = categories.flatMap((category) =>
   .toc-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    max-height: 360px;
+    gap: 12px;
+    max-height: 520px;
     overflow: auto;
   }
 
+  .toc-category {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .toc-category-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    padding: 0.25rem 0.45rem;
+    border-radius: 6px;
+    background: #f0f4f8;
+    text-decoration: none;
+  }
+
+  .toc-category-label:hover {
+    background: #e5eef5;
+  }
+
   .toc-list a {
-    font-size: 0.84rem;
+    font-size: 0.82rem;
     color: var(--ink-soft);
-    padding: 0.3rem 0.45rem;
-    border-radius: 8px;
+    padding: 0.25rem 0.45rem 0.25rem 1rem;
+    border-radius: 6px;
+    margin-left: 0.25rem;
+    text-decoration: none;
+    display: block;
   }
 
   .toc-list a:hover {
@@ -181,6 +252,88 @@ const projectLinks = categories.flatMap((category) =>
     margin-top: 8px;
     color: var(--muted);
     font-size: 0.94rem;
+  }
+
+  .stack-visualization {
+    margin-bottom: 40px;
+  }
+
+  .stack-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 700px;
+    margin: 20px auto 0;
+  }
+
+  .stack-layer {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    align-items: start;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .stack-layer:hover {
+    transform: translateX(4px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+    border-color: var(--accent);
+  }
+
+  .layer-index {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.15);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .layer-content {
+    min-width: 0;
+  }
+
+  .layer-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px 0;
+  }
+
+  .layer-description {
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .stack-note {
+    max-width: 700px;
+    margin: 24px auto 0;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, rgba(219, 234, 254, 0.5), rgba(224, 242, 254, 0.3));
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+  }
+
+  .stack-note p {
+    color: #1e3a8a;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .stack-note strong {
+    color: #1e40af;
   }
 
   .table-section {
@@ -308,326 +461,6 @@ const projectLinks = categories.flatMap((category) =>
     line-height: 1.45;
   }
 
-  .cards-section {
-    margin-top: 36px;
-  }
-
-  :global(.cards-container) {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  :global(.cards-grid) {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-
-  :global(.project-card) {
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 20px;
-    transition: transform 170ms ease, border-color 170ms ease, box-shadow 170ms ease;
-    display: flex;
-    flex-direction: column;
-  }
-
-  :global(.project-card:hover) {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
-  }
-
-  :global(.card-header) {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 14px;
-    align-items: flex-start;
-  }
-
-  :global(.card-icon) {
-    font-size: 2.2rem;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  :global(.card-title) {
-    font-size: 1.12rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin: 0 0 8px 0;
-  }
-
-  :global(.card-title-link) {
-    color: inherit;
-  }
-
-  :global(.card-title-link:hover) {
-    color: #1d4ed8;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  :global(.card-meta) {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  :global(.category-badge) {
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    background: #eff6ff;
-    color: #1d4ed8;
-  }
-
-  :global(.status-badge) {
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-  }
-
-  :global(.status-badge.Done) {
-    background: #dcfce7;
-    color: #166534;
-  }
-
-  :global(.status-badge.WIP) {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  :global(.status-badge.TBD) {
-    background: #fff4d7;
-    color: #8a4b08;
-  }
-
-  :global(.card-description) {
-    color: #4f627a;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin-bottom: 14px;
-  }
-
-  :global(.card-goals) {
-    margin-bottom: 12px;
-    padding-top: 14px;
-    border-top: 1px solid #edf2fa;
-  }
-
-  :global(.card-goals h4) {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #6b7d96;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  :global(.card-goals ul) {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  :global(.card-goals li) {
-    position: relative;
-    padding: 6px 0 6px 16px;
-    color: #4f627a;
-    font-size: 0.84rem;
-    line-height: 1.5;
-  }
-
-  :global(.card-goals li::before) {
-    content: '•';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-weight: bold;
-  }
-
-  :global(.card-goals .more-goals) {
-    color: #6b7d96;
-    font-style: italic;
-  }
-
-  :global(.card-footer) {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: auto;
-    padding-top: 12px;
-  }
-
-  :global(.details-link) {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border: 1px solid #bfdbfe;
-    color: #1e40af;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.82rem;
-    transition: background 150ms ease, border-color 150ms ease;
-  }
-
-  :global(.details-link:hover) {
-    background: #eff6ff;
-    border-color: #93c5fd;
-  }
-
-  :global(.repo-link) {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    background: var(--accent);
-    color: white;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.84rem;
-    transition: background 150ms ease, transform 150ms ease;
-  }
-
-  :global(.repo-link:hover) {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-  }
-
-  :global(.modal-overlay) {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.55);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-  }
-
-  :global(.modal-content) {
-    background: #ffffff;
-    border-radius: 16px;
-    max-width: 620px;
-    width: 100%;
-    max-height: 82vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 36px rgba(15, 23, 42, 0.24);
-  }
-
-  :global(.modal-header) {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 24px;
-    border-bottom: 1px solid #edf2fa;
-  }
-
-  :global(.modal-header h2) {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin: 0 0 8px 0;
-  }
-
-  :global(.modal-category) {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    background: #eff6ff;
-    color: #1d4ed8;
-  }
-
-  :global(.close-button) {
-    background: #eef4ff;
-    border: none;
-    color: #4f627a;
-    font-size: 1.05rem;
-    cursor: pointer;
-    padding: 8px 10px;
-    line-height: 1;
-    border-radius: 8px;
-    transition: background 150ms ease, color 150ms ease;
-    font-weight: 600;
-  }
-
-  :global(.close-button:hover) {
-    background: var(--accent);
-    color: white;
-  }
-
-  :global(.modal-body) {
-    padding: 24px;
-  }
-
-  :global(.modal-description) {
-    color: #4f627a;
-    line-height: 1.7;
-    font-size: 0.98rem;
-    margin-bottom: 22px;
-  }
-
-  :global(.modal-goals h4) {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #6b7d96;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
-  }
-
-  :global(.modal-goals ul) {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-  }
-
-  :global(.modal-goals li) {
-    position: relative;
-    padding: 8px 0 8px 20px;
-    color: #4f627a;
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-
-  :global(.modal-goals li::before) {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: #15803d;
-    font-weight: 700;
-  }
-
-  :global(.modal-repo-link) {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 11px 18px;
-    background: var(--accent);
-    color: white !important;
-    border-radius: 9px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: background 150ms ease, transform 150ms ease;
-  }
-
-  :global(.modal-repo-link:hover) {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-  }
-
   @media (max-width: 900px) {
     .nano-shell {
       grid-template-columns: 1fr;
@@ -647,8 +480,35 @@ const projectLinks = categories.flatMap((category) =>
       max-height: none;
     }
 
-    :global(.cards-grid) {
-      grid-template-columns: 1fr;
+    .stack-layers {
+      max-width: 100%;
+    }
+
+    .stack-layer {
+      grid-template-columns: 24px 1fr;
+      padding: 14px 16px;
+    }
+
+    .layer-index {
+      width: 24px;
+      height: 24px;
+      font-size: 0.75rem;
+    }
+
+    .layer-name {
+      font-size: 1rem;
+    }
+
+    .layer-description {
+      font-size: 0.85rem;
+    }
+
+    .stack-note {
+      padding: 16px;
+    }
+
+    .stack-note p {
+      font-size: 0.88rem;
     }
   }
 </style>

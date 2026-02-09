@@ -1,0 +1,393 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import AutoToc from '../../../components/AutoToc.astro';
+import { getCollection } from 'astro:content';
+import { slugifySegment } from '../../../utils/slug';
+
+const categoryWhy: Record<string, string> = {
+  Silicon:
+    'Silicon determines the raw capability envelope of AGI workloads. If you do not understand compute primitives and memory behavior, every optimization above this layer is constrained.',
+  Virt:
+    'Virtualization controls utilization, isolation, and portability. AGI infrastructure needs efficient multi-tenant execution and reliable abstractions around hardware.',
+  Compiler:
+    'Compilers convert model intent into executable kernels. For AGI-scale systems, compiler quality directly impacts latency, throughput, and hardware efficiency.',
+  Framework:
+    'Frameworks are where researchers and production teams spend most of their time. AGI progress depends on frameworks that expose power without hiding critical system trade-offs.',
+  Agent:
+    'Agents are increasingly central operators of software systems. AGI infrastructure needs agent tooling that is transparent, controlled, and grounded in real system constraints.',
+};
+
+const allCategories = (await getCollection('projects')).map((entry) => {
+  const categorySlug = slugifySegment(entry.data.category);
+  return {
+    category: entry.data.category,
+    categorySlug,
+    projects: entry.data.projects.map((project) => ({
+      name: project.name,
+      href: `/nano-infra/${categorySlug}/${slugifySegment(project.name)}`,
+    })),
+  };
+});
+
+const categoryOrder = ['Silicon', 'Virt', 'Compiler', 'Framework', 'Agent'];
+allCategories.sort((a, b) => categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category));
+
+export async function getStaticPaths() {
+  const categories = await getCollection('projects');
+  return categories.map((entry) => ({
+    params: { category: slugifySegment(entry.data.category) },
+    props: {
+      category: entry.data.category,
+      projects: entry.data.projects,
+      categorySlug: slugifySegment(entry.data.category),
+    },
+  }));
+}
+
+const { category, projects, categorySlug } = Astro.props;
+const categoryWhyText = categoryWhy[category] ?? '';
+const categoryColor: Record<string, string> = {
+  Silicon: '#fce7f3',
+  Virt: '#fef3c7',
+  Compiler: '#f0fdf4',
+  Framework: '#e0f2fe',
+  Agent: '#dbeafe',
+};
+const statusOrder = { Done: 0, WIP: 1, TBD: 2 };
+const sortedProjects = [...projects].sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
+---
+
+<Layout title={`${category} | Vibe Nano`} description={`Projects and progress for ${category} in the Vibe Nano infrastructure stack.`}>
+  <main class="category-shell reveal">
+    <aside class="side-rail">
+      <AutoToc rootSelector=".main-content" itemSelector="[data-toc]" />
+
+      <div class="toc-card">
+        <p class="toc-title">Nano Projects</p>
+        <nav class="toc-list">
+          {allCategories.map((cat) => (
+            <div class="toc-category">
+              <a href={`/nano-infra/${cat.categorySlug}/`} class={`toc-category-label ${cat.categorySlug === categorySlug ? 'active' : ''}`}>{cat.category}</a>
+              {cat.projects.map((proj) => (
+                <a href={proj.href}>{proj.name}</a>
+              ))}
+            </div>
+          ))}
+        </nav>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <header class="page-header" id="overview" data-toc data-toc-label="Overview">
+        <a href="/nano-infra" class="back-link">← Back to Vibe Nano</a>
+        <span class="badge" style={`background: ${categoryColor[category]}`}>{category}</span>
+        <h1>{category} Layer</h1>
+        <p class="subtitle">{categoryWhyText}</p>
+      </header>
+
+      <section class="projects-section" id="projects" data-toc>
+        <div class="section-header">
+          <h2>{category} Projects</h2>
+          <p class="section-subtitle">
+            {sortedProjects.filter((p) => p.status === 'Done').length} of {projects.length} projects complete
+          </p>
+        </div>
+
+        <div class="projects-list">
+          {sortedProjects.map((project) => (
+            <a href={`/nano-infra/${categorySlug}/${slugifySegment(project.name)}`} class="project-row">
+              <div class="project-info">
+                <div class="project-header">
+                  <h3 class="project-name">{project.name}</h3>
+                  <span class={`status ${project.status}`}>
+                    {project.status === 'WIP' ? 'In Progress' : project.status}
+                  </span>
+                </div>
+                <p class="project-description">{project.description}</p>
+                {project.repo && (
+                  <div class="project-meta">
+                    <span class="repo-link">github.com/lastweek/{project.repo} ↗</span>
+                  </div>
+                )}
+              </div>
+              <div class="project-arrow">→</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .category-shell {
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 52px 20px 90px;
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .side-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .toc-card {
+    position: sticky;
+    top: 82px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .toc-card + .toc-card {
+    top: 244px;
+  }
+
+  .toc-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 520px;
+    overflow: auto;
+  }
+
+  .toc-category {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .toc-category-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    padding: 0.25rem 0.45rem;
+    border-radius: 6px;
+    background: #f0f4f8;
+    text-decoration: none;
+    display: block;
+  }
+
+  .toc-category-label:hover {
+    background: #e5eef5;
+  }
+
+  .toc-category-label.active {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .toc-list a {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    padding: 0.25rem 0.45rem 0.25rem 1rem;
+    border-radius: 6px;
+    margin-left: 0.25rem;
+    text-decoration: none;
+    display: block;
+  }
+
+  .toc-list a:hover {
+    background: #eef4ff;
+    color: var(--ink);
+  }
+
+  .page-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 34px;
+  }
+
+  .back-link {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+  }
+
+  .subtitle {
+    margin: 14px auto 0;
+    max-width: 58ch;
+    font-size: 1.07rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .section-header {
+    text-align: center;
+    margin: 20px auto 30px;
+    max-width: 760px;
+  }
+
+  .section-header h2 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    font-size: 1.8rem;
+  }
+
+  .section-subtitle {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.94rem;
+  }
+
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .project-row:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  .project-info {
+    min-width: 0;
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .status {
+    display: inline-flex;
+    border-radius: 999px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .status.Done {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .status.WIP {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .status.TBD {
+    background: #fff4d7;
+    color: #8a4b08;
+  }
+
+  .project-description {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 12px 0;
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .repo-link {
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .project-arrow {
+    font-size: 1.5rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    .category-shell {
+      grid-template-columns: 1fr;
+      padding-top: 40px;
+    }
+
+    .side-rail {
+      order: 2;
+    }
+
+    .toc-card,
+    .toc-card + .toc-card {
+      position: static;
+    }
+
+    .toc-list {
+      max-height: none;
+    }
+
+    .project-row {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .project-arrow {
+      display: none;
+    }
+  }
+</style>
