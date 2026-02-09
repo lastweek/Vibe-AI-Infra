@@ -20,6 +20,13 @@ projects:
       - SR-IOV VF passthrough via VFIO for device assignment
       - Comprehensive documentation and test kernels
     status: Done
-  - name: Nano Container
-    description: Lightweight container runtime for isolation and resource management.
+  - name: Nano Sandbox
+    repo: vibe-sandbox
+    description: Educational OCI-compatible container runtime in C with pure-container and Firecracker-backed execution modes.
+    goals:
+      - Implement OCI spec parsing and lifecycle commands (`create`, `start`, `run`, `delete`, `state`)
+      - Build Linux namespace, mount, cgroup v2, and process isolation paths
+      - Persist structured runtime state and logs for debugging and observability
+      - Maintain smoke, integration, and performance test workflows for end-to-end validation
+      - Add Firecracker-based microVM execution for stronger workload sandboxing
     status: WIP
