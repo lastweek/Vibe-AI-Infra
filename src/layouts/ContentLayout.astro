@@ -237,69 +237,76 @@ const hasSidebar = toc.length > 0 || sideLinks.length > 0;
 
   .content-prose :global(pre) {
     margin: 1.5rem 0;
-    background: #ffffff;
-    border: 1px solid #e1e4e8;
+    background: #ffffff !important;
+    border: 1px solid #e1e4e8 !important;
     border-radius: 6px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
   .content-prose :global(pre > code) {
-    display: block;
-    padding: 1.25rem 1.5rem;
-    font-size: 0.875rem;
-    line-height: 1.7;
-    background: transparent;
-    color: #24292e;
+    display: block !important;
+    padding: 1.25rem 1.5rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.7 !important;
+    background: transparent !important;
+    color: #24292e !important;
     overflow-x: auto;
     font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
   }
 
   /* GitHub Light Syntax Highlighting */
-  .content-prose :global(pre > code) :global(.token.keyword),
-  .content-prose :global(pre > code) :global(.token.operator) {
-    color: #d73a49;
+  .content-prose :global(pre) :global(code) :global(.token.keyword),
+  .content-prose :global(pre) :global(code) :global(.token.operator) {
+    color: #d73a49 !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.string) {
-    color: #032f62;
+  .content-prose :global(pre) :global(code) :global(.token.string),
+  .content-prose :global(pre) :global(code) :global(.token.regex) {
+    color: #032f62 !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.comment) {
-    color: #6a737d;
+  .content-prose :global(pre) :global(code) :global(.token.comment) {
+    color: #6a737d !important;
     font-style: italic;
   }
 
-  .content-prose :global(pre > code) :global(.token.function),
-  .content-prose :global(pre > code) :global(.token.class-name) {
-    color: #6f42c1;
+  .content-prose :global(pre) :global(code) :global(.token.function),
+  .content-prose :global(pre) :global(code) :global(.token.class-name) {
+    color: #6f42c1 !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.number),
-  .content-prose :global(pre > code) :global(.token.boolean) {
-    color: #005cc5;
+  .content-prose :global(pre) :global(code) :global(.token.number),
+  .content-prose :global(pre) :global(code) :global(.token.boolean),
+  .content-prose :global(pre) :global(code) :global(.token.number) {
+    color: #005cc5 !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.property),
-  .content-prose :global(pre > code) :global(.token.attr-name) {
-    color: #6f42c1;
+  .content-prose :global(pre) :global(code) :global(.token.property),
+  .content-prose :global(pre) :global(code) :global(.token.attr-name) {
+    color: #6f42c1 !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.tag) {
-    color: #22863a;
+  .content-prose :global(pre) :global(code) :global(.token.tag) {
+    color: #22863a !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.attr-value),
-  .content-prose :global(pre > code) :global(.token.string) {
-    color: #032f62;
+  .content-prose :global(pre) :global(code) :global(.token.attr-value) {
+    color: #032f62 !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.punctuation) {
-    color: #24292e;
+  .content-prose :global(pre) :global(code) :global(.token.punctuation) {
+    color: #24292e !important;
   }
 
-  .content-prose :global(pre > code) :global(.token.plain) {
-    color: #24292e;
+  .content-prose :global(pre) :global(code) :global(.token.plain),
+  .content-prose :global(pre) :global(code) :global(.token) {
+    color: #24292e !important;
+  }
+
+  /* Ensure all code text is visible */
+  .content-prose :global(pre) :global(*) {
+    color: #24292e !important;
   }
 
   @media (max-width: 980px) {
