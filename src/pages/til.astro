@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const entries = await getCollection('til', ({ data }) => !data.draft);
 
 // Sort by date, newest first
-entries.sort((a, b) => b.data.date - a.data.date);
+entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 // Group entries by date
 const groupedByDate = entries.reduce((acc, entry) => {

@@ -42,14 +42,12 @@ function processMarkdownFile(filePath) {
   const outputLines = [];
   let inMermaidBlock = false;
   let mermaidCode = [];
-  let mermaidStartLine = 0;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
     if (line.trim() === '```mermaid') {
       inMermaidBlock = true;
-      mermaidStartLine = i;
       mermaidCode = [];
       continue;
     }
