@@ -9,9 +9,58 @@ projects:
       - Able to train a simple transformer module
       - Able to run on the CPU backend, possibly the vibe-gpu
     status: WIP
-  - name: Nano Megatron
-    description: Large-scale distributed training framework inspired by Megatron.
+  - name: Nano Train
+    repo: nano-train
+    description: Production-grade distributed LLM training framework implementing tensor, pipeline, and data parallelism for training models from 125M to 671B parameters.
     status: TBD
+    intro: |
+      Nano Train is a production-grade distributed training framework built from scratch to train state-of-the-art language models like DeepSeek-R1 (671B Mixture-of-Experts). The framework implements comprehensive parallelism strategies similar to Megatron-LM with a cleaner, more modular architecture.
+
+      ## Project Overview
+
+      The framework addresses the challenge of training massive language models efficiently across distributed compute environments. It supports Mixture-of-Experts architectures and 3D parallelism (tensor, pipeline, data, sequence, and expert parallelism) designed to scale from 125M to 671B parameters on 1000+ GPUs.
+
+      ## Current Status
+
+      **Phase 0 Complete** - MVP training cycle working successfully:
+      - Trained 125M parameter GPT-style model (33 minutes, 1000 steps)
+      - Loss decreased from ~3.5 to 0.0000
+      - Features: Basic transformer, training loop, optimizer, scheduler, data loader
+
+      ## Architecture
+
+      The framework follows a clean, modular architecture with distinct components:
+
+      - **core/** - Infrastructure and foundational components
+      - **models/** - Model architectures (GPT-style transformers)
+      - **parallelism/** - Parallelism strategies (tensor, pipeline, data)
+      - **training/** - Training infrastructure (loops, checkpoints, logging)
+      - **data/** - Data loading and preprocessing
+
+      ## Key Technologies
+
+      - **PyTorch** - Industry standard with best distributed support
+      - **BF16** - Primary precision for better numerical stability
+      - **TensorBoard** - Comprehensive metrics tracking
+      - **Cosine Annealing** - Learning rate scheduling with warmup
+      - **AdamW** - Optimizer with weight decay
+
+      ## Development Roadmap
+
+      The project follows a 36-week phased roadmap:
+
+      - **Phase 0** (Weeks 1-3): MVP ✅ Complete
+      - **Phase 1** (Weeks 4-6): Production foundation with OmegaConf + Hydra
+      - **Phase 2** (Weeks 7-10): Flash Attention, gradient checkpointing
+      - **Phase 3-11**: Sequential implementation of parallelism strategies
+      - **Final Goal**: 671B MoE model training at scale
+
+      ## Key Innovations
+
+      - **Automated Workflow**: Sync script for seamless local-to-cloud development
+      - **Progressive Scaling**: From 125M MVP to 671B MoE models
+      - **Clean Architecture**: Modular design with clear separation of concerns
+      - **Comprehensive Logging**: TensorBoard integration for metrics tracking
   - name: Nano Serving
     description: Model serving and inference optimization system.
     status: TBD

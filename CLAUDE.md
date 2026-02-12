@@ -244,3 +244,61 @@ flowchart LR
 ````
 
 After running `npm run render-mermaid`, this becomes an embedded SVG image.
+
+## Adding GitHub URLs to Nano Projects
+
+When adding or updating a GitHub URL for any nano project, follow this workflow:
+
+### Required Steps
+
+1. **Analyze the repository** by reading the code from the GitHub URL
+2. **Generate a one-liner introduction** - A concise, single-sentence summary of what the project does
+3. **Generate a one-page introduction** - A comprehensive overview covering:
+   - Project overview and purpose
+   - Key technologies and architecture
+   - Main features and capabilities
+   - Implementation details and design decisions
+
+### Where Content Goes
+
+- **One-liner**: Update the `description` field in the project's YAML file
+- **One-page introduction**: Create/update the project's detail page in `src/content/projects/`
+
+### Example Workflow
+
+```bash
+# 1. User provides: "Add URL https://github.com/lastweek/nano-train to Nano Train"
+
+# 2. Analyze the repo
+# - Read README.md, main source files, documentation
+# - Understand architecture, key components, implementation
+
+# 3. Generate content
+# - One-liner: "Distributed training framework implementing tensor parallelism and pipeline parallelism for large-scale LLM training"
+# - One-page: Full technical overview with architecture, features, implementation details
+
+# 4. Update files
+# - Edit src/content/projects/framework.yaml
+# - Create/update src/content/projects/framework/nano-train.md
+```
+
+### Content Guidelines
+
+**One-liner requirements:**
+- Single sentence
+- Describes core purpose and key technique
+- Technology-agnostic (focus on what, not how)
+- Under 20 words
+
+**One-page introduction requirements:**
+- 300-800 words
+- Technical depth appropriate for the project stage
+- Covers: architecture, key features, design decisions
+- Include diagrams if helpful (Mermaid supported)
+- Reference actual implementation details from code
+
+### Examples
+
+See existing implementations:
+- `src/content/projects/virt/nano-k8s-tutorial.md` - Production K8s LLM serving
+- `src/content/projects/virt/nano-sandbox.md` - Container sandbox architecture
