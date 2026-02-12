@@ -15,15 +15,85 @@ npm install
 # Start development server (http://localhost:5173)
 npm run dev
 
+# Type check without building (catches TypeScript errors)
+npm run check
+
 # Build for production
 npm run build
+
+# Run full CI pipeline (type check + build)
+npm run ci
 
 # Preview production build locally
 npm run preview
 
-# Lint code
-npm run lint
+# Render Mermaid diagrams to SVG
+npm run render-mermaid
+
+# Push with validation (RECOMMENDED over git push)
+npm run push
 ```
+
+## Pre-Commit and Pre-Push Workflow
+
+**IMPORTANT: Always run validation before pushing to GitHub.**
+
+### Why This Matters
+
+- `npm run dev` does NOT run full TypeScript type checking
+- TypeScript errors (unused variables, type mismatches) only appear during `astro check` or build
+- GitHub Actions will fail if these errors aren't caught locally
+- Broken deployments waste time and block the site from updating
+
+### Required Validation Before Pushing
+
+**Before committing or pushing, ALWAYS run:**
+
+```bash
+npm run ci
+```
+
+This runs:
+1. `npm run check` - Full TypeScript type checking
+2. `npm run build` - Production build verification
+
+### Safe Push Workflow
+
+**Option 1: Use npm run push (RECOMMENDED)**
+
+```bash
+npm run push
+```
+
+This automatically runs pre-push validation before pushing. If validation fails, the push is aborted.
+
+**Option 2: Manual validation**
+
+```bash
+npm run ci && git push
+```
+
+**NEVER use `git push` directly without running `npm run ci` first.**
+
+### What Gets Checked
+
+The validation catches:
+- TypeScript type errors (e.g., Date arithmetic operations)
+- Unused variables and imports
+- Astro component type mismatches
+- Build failures due to syntax or dependency issues
+
+### Example Failure
+
+```typescript
+// ❌ WRONG - Date arithmetic fails TypeScript check
+entries.sort((a, b) => b.data.date - a.data.date);
+
+// ✅ CORRECT - Use .getTime() for numeric comparison
+entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+```
+
+This error only appears in `npm run check`, not in `npm run dev`.
 
 ## Architecture
 
