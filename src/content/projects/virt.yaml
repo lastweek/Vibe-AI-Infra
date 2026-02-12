@@ -30,3 +30,12 @@ projects:
       - Maintain smoke, integration, and performance test workflows for end-to-end validation
       - Add Firecracker-based microVM execution for stronger workload sandboxing
     status: Done
+  - name: Nano K8S Tutorial
+    repo: nano-k8s-cluster
+    description: Hands-on tutorial for building a minimal Kubernetes cluster from scratch using containerd and the K8s control plane APIs.
+    goals:
+      - Set up containerd as the container runtime
+      - Configure and deploy the Kubernetes control plane components
+      - Create and manage worker nodes
+      - Deploy sample applications and validate cluster functionality
+    status: WIP
