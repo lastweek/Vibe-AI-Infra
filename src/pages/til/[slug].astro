@@ -1,0 +1,75 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentLayout from '../../layouts/ContentLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('til', ({ data }) => !data.draft);
+  const sideLinks = entries.map((item) => ({
+    href: `/til/${item.slug}`,
+    label: item.data.title,
+  }));
+
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry, sideLinks },
+  }));
+}
+
+const { entry, sideLinks } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const toc = headings
+  .filter((heading) => heading.depth === 2)
+  .map((heading) => ({
+    href: `#${heading.slug}`,
+    label: heading.text,
+  }));
+
+const scopedLinks = sideLinks.map((item: { href: string; label: string }) => ({
+  ...item,
+  active: item.href === `/til/${entry.slug}`,
+}));
+---
+
+<ContentLayout
+  title={entry.data.title}
+  description={entry.data.description || `Today I Learned: ${entry.data.title}`}
+  eyebrow="Today I Learned"
+  updated={entry.data.date}
+  backHref="/til"
+  backLabel="← Back to TIL"
+  toc={toc}
+  sideLinksTitle="Recent Entries"
+  sideLinks={scopedLinks}
+>
+  <div class="til-meta">
+    {entry.data.tags.length > 0 && (
+      <div class="tag-row">
+        {entry.data.tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+  <Content />
+</ContentLayout>
+
+<style>
+  .til-meta {
+    margin-bottom: 24px;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.71rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+</style>

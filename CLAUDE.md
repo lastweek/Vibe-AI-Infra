@@ -74,10 +74,103 @@ Edit `src/projects.ts` directly:
 
 ## Styling Conventions
 
-- Dark theme: `#0d1117` background, `rgba(255,255,255,0.87)` text
-- Status colors:
+- **Overall theme**: Light theme with soft gradients
+- **Code blocks**: GitHub Light theme colors
+  - Keywords: `#d73a49` (red)
+  - Strings: `#032f62` (dark blue)
+  - Comments: `#6a737d` (gray, italic)
+  - Functions: `#6f42c1` (purple)
+  - Numbers: `#005cc5` (blue)
+  - Background: `#ffffff` (white)
+  - Border: `#e1e4e8`
+- **Status colors**:
   - Done: green `#3fb950`
   - WIP: yellow `#d29922`
   - TBD: gray `#8b949e`
-- Accent: blue `#58a6ff` for links
-- Border: `rgba(255,255,255,0.1)` for subtle separation
+- **Accent**: blue `#58a6ff` for links
+- **Font**: SF Mono, Menlo, Monaco, Consolas for code
+- **Border**: `rgba(255,255,255,0.1)` for subtle separation
+
+## TIL (Today I Learned) Creation Workflow
+
+When creating TIL entries, follow this process:
+
+### Input
+- User may provide **multiple topics** learned in a single day
+- Content can be raw notes, links, code snippets, explanations, etc.
+
+### Processing
+1. Parse and deeply understand all provided content
+2. Identify distinct topics/themes within the material
+
+### When to Merge vs Separate Pages
+
+**Use judgment based on topic relatedness:**
+
+**Merge into ONE page when topics are:**
+- About the same technology/project (e.g., both about SGLang)
+- Conceptually related (e.g., native support + fallback mechanism)
+- Part of a learning progression (e.g., basic concept + advanced application)
+- Fewer than 3 distinct topics that tell a coherent story
+
+**Create SEPARATE pages when topics are:**
+- Completely different technologies (e.g., Kubernetes networking + CSS styling)
+- Different domains (e.g., backend architecture + frontend design)
+- Independent learning goals with no narrative connection
+- 3+ topics that would make a single page too long/unfocused
+
+**Examples:**
+- ✅ **Merge**: "GLM-5 native support" + "SGLang Transformers backend" (both about SGLang model support)
+- ✅ **Merge**: "K8s networking" + "K8s security" (both about Kubernetes)
+- ❌ **Separate**: "K8s networking" + "CSS grid layout" (completely different domains)
+- ❌ **Separate**: "Python async/await" + "Bash scripting basics" (unrelated topics)
+
+### Output Format
+Create a single markdown file in `src/content/til/` with:
+
+1. **One Overall Title**: Short, concise, precise summary of everything learned that day
+2. **Per-Topic Sections**:
+   - **One-liner**: Simple, brief summary sentence for each topic
+   - **Details**: Expanded explanation with content, code, links, etc.
+
+### Example Structure
+```markdown
+---
+title: "K8s Networking, Linux Namespaces, and Container Security"
+description: "Learned about Kubernetes pod networking, Linux namespace isolation, and container security best practices"
+date: 2025-02-12
+tags: ["kubernetes", "linux", "security"]
+---
+
+## K8s Pod Networking
+Learned how pods communicate within a cluster using CNI plugins and overlay networks...
+
+## Linux Namespace Isolation
+Explored how Linux namespaces provide process isolation through mount, network, and IPC namespaces...
+
+## Container Security
+Discovered security best practices including...
+```
+
+### File Location
+- Create new TIL entries in: `src/content/til/YYYY-MM-DD-topic.md`
+- Each file becomes a page at: `/til/YYYY-MM-DD-topic`
+- Main listing page: `/til`
+
+### Mermaid Diagrams
+TIL entries support Mermaid diagrams for visualizing concepts:
+
+1. **Write diagrams** in markdown using ` ```mermaid ` code blocks
+2. **Render them** by running: `npm run render-mermaid`
+3. **Diagrams are converted** to SVG and saved in `public/mermaid/`
+4. **Markdown is updated** to reference the SVG files
+
+Example:
+````markdown
+```mermaid
+flowchart LR
+  A[Start] --> B[End]
+```
+````
+
+After running `npm run render-mermaid`, this becomes an embedded SVG image.

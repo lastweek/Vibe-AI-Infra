@@ -40,4 +40,15 @@ const insights = defineCollection({
   }),
 });
 
-export const collections = { projects, pages, insights };
+const til = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    draft: z.boolean().default(false),
+    date: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = { projects, pages, insights, til };

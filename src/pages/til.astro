@@ -1,0 +1,272 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('til', ({ data }) => !data.draft);
+
+// Sort by date, newest first
+entries.sort((a, b) => b.data.date - a.data.date);
+
+// Group entries by date
+const groupedByDate = entries.reduce((acc, entry) => {
+  const dateKey = entry.data.date.toISOString().split('T')[0];
+  if (!acc[dateKey]) {
+    acc[dateKey] = [];
+  }
+  acc[dateKey].push(entry);
+  return acc;
+}, {} as Record<string, typeof entries>);
+
+// Get unique tags
+const allTags = new Set<string>();
+entries.forEach((entry) => {
+  entry.data.tags.forEach((tag) => allTags.add(tag));
+});
+---
+
+<Layout title="Today I Learned | Vibe AI Infra" description="Daily learning notes and discoveries">
+  <main class="til-shell reveal">
+    <aside class="side-rail">
+      <div class="toc-card">
+        <p class="toc-title">Tags</p>
+        <nav class="toc-list">
+          {Array.from(allTags).sort().map((tag) => (
+            <a href={`#tag-${tag}`}>{tag}</a>
+          ))}
+        </nav>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <header class="til-header">
+        <span class="eyebrow">Learning Journal</span>
+        <h1>Today I Learned</h1>
+        <p>
+          A collection of daily discoveries, insights, and notes from building AI infrastructure.
+          Each entry captures something new learned along the journey.
+        </p>
+      </header>
+
+      <section class="til-entries">
+        {Object.entries(groupedByDate).map(([date, entries]) => (
+          <div class="date-group" id={`date-${date}`}>
+            <h2 class="date-header">
+              {new Date(date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </h2>
+            <div class="entries-list">
+              {entries.map((entry) => (
+                <a class="til-card" href={`/til/${entry.slug}`}>
+                  <h3>{entry.data.title}</h3>
+                  {entry.data.description && <p>{entry.data.description}</p>}
+                  {entry.data.tags.length > 0 && (
+                    <div class="tag-row">
+                      {entry.data.tags.map((tag) => (
+                        <span class="tag" id={`tag-${tag}`}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  <span class="jump">Read more</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {entries.length === 0 && (
+        <div class="empty-state">
+          <p>No TIL entries yet. Start learning and documenting!</p>
+        </div>
+      )}
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .til-shell {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 20px 100px;
+    display: grid;
+    grid-template-columns: 290px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .side-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .toc-card {
+    position: sticky;
+    top: 82px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .toc-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .toc-list a {
+    font-size: 0.84rem;
+    color: var(--ink-soft);
+    padding: 0.3rem 0.45rem;
+    border-radius: 8px;
+  }
+
+  .toc-list a:hover {
+    background: #eef4ff;
+    color: var(--ink);
+  }
+
+  .til-header {
+    max-width: 760px;
+    margin-bottom: 32px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+  }
+
+  .til-header p {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 1.03rem;
+    line-height: 1.72;
+  }
+
+  .til-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .date-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .date-header {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--line);
+  }
+
+  .entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .til-card {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .til-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .til-card p {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.93rem;
+    line-height: 1.65;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 0.71rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  .jump {
+    margin-top: auto;
+    padding-top: 12px;
+    color: var(--accent);
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    border: 1px dashed var(--line);
+  }
+
+  @media (max-width: 900px) {
+    .til-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .side-rail {
+      order: 2;
+    }
+
+    .toc-card {
+      position: static;
+    }
+  }
+</style>
