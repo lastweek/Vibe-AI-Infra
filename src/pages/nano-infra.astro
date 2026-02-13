@@ -340,12 +340,13 @@ const stackLayers = [
     margin-bottom: 28px;
   }
 
+  /* Simple Table Layout with Category Colors */
   :global(.table-wrapper) {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid var(--line);
-    border-radius: 14px;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 24px rgba(30, 58, 138, 0.07);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.06);
   }
 
   :global(.projects-table) {
@@ -354,27 +355,49 @@ const stackLayers = [
   }
 
   :global(.projects-table thead) {
-    background: #f5f9ff;
-    border-bottom: 1px solid var(--line);
+    background: #f8fafc;
+    border-bottom: 2px solid #cbd5e1;
   }
 
   :global(.projects-table th) {
-    padding: 10px 16px;
+    padding: 8px 16px;
     text-align: left;
-    font-weight: 600;
-    font-size: 0.72rem;
-    color: #5b6f89;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #475569;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-  }
-
-  :global(.projects-table td) {
-    padding: 10px 16px;
     vertical-align: middle;
   }
 
+  :global(.projects-table td) {
+    padding: 8px 16px;
+    vertical-align: middle;
+  }
+
+  /* Category-specific row colors */
+  :global(.projects-table tbody tr.category-silicon) {
+    background: #f8fafc;
+  }
+
+  :global(.projects-table tbody tr.category-virt) {
+    background: #ecfdf5;
+  }
+
+  :global(.projects-table tbody tr.category-compiler) {
+    background: #f0f9ff;
+  }
+
+  :global(.projects-table tbody tr.category-framework) {
+    background: #eef2ff;
+  }
+
+  :global(.projects-table tbody tr.category-agent) {
+    background: #f5f3ff;
+  }
+
   :global(.projects-table tbody tr) {
-    border-bottom: 1px solid #edf2fa;
+    border-bottom: 1px solid #cbd5e1;
     cursor: pointer;
     transition: background-color 150ms ease;
   }
@@ -384,39 +407,25 @@ const stackLayers = [
   }
 
   :global(.projects-table tbody tr:hover) {
-    background: #f8fbff;
-  }
-
-  :global(.projects-table tbody tr.selected) {
-    background: #eef4ff;
-  }
-
-  :global(.projects-table tbody tr.category-silicon),
-  :global(.projects-table tbody tr.category-virt),
-  :global(.projects-table tbody tr.category-compiler),
-  :global(.projects-table tbody tr.category-framework),
-  :global(.projects-table tbody tr.category-agent) {
-    background: transparent;
+    filter: brightness(0.97);
   }
 
   :global(.category-cell) {
     width: 15%;
-    padding: 0;
-    border-right: 1px solid #edf2fa;
-    background: #f5f9ff;
+    text-align: center;
+    border-right: 1px solid #cbd5e1;
   }
 
   :global(.category-cell .category-badge) {
-    display: block;
-    width: 100%;
-    padding: 10px 16px;
-    text-align: center;
-    font-size: 0.72rem;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #1e3a8a;
-    background: #dbeafe;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
   }
 
   :global(.project-cell) {
@@ -427,21 +436,20 @@ const stackLayers = [
 
   :global(.project-name) {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--ink);
   }
 
   :global(.project-link) {
     color: inherit;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 2px 4px;
     margin-left: -4px;
-    transition: background 150ms ease, color 150ms ease;
+    transition: background 150ms ease;
   }
 
   :global(.project-link:hover) {
-    background: #eef4ff;
-    color: #1d4ed8;
+    background: rgba(255, 255, 255, 0.5);
   }
 
   :global(.github-link) {
@@ -456,9 +464,9 @@ const stackLayers = [
   }
 
   :global(.description-cell) {
-    color: #4f627a;
-    font-size: 0.84rem;
-    line-height: 1.45;
+    color: #475569;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   @media (max-width: 900px) {

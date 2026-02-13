@@ -64,6 +64,6 @@ projects:
   - name: Nano Serving
     description: Model serving and inference optimization system.
     status: TBD
-  - name: Nano AReal
-    description: Analog computing and real-time processing framework.
+  - name: Nano Agentic RL
+    description: An agentic RL post-training framework.
     status: TBD
