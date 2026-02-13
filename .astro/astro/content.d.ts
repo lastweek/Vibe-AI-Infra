@@ -205,11 +205,6 @@ declare module 'astro:content' {
   collection: "projects";
   data: InferEntrySchema<"projects">
 };
-"compiler": {
-	id: "compiler";
-  collection: "projects";
-  data: InferEntrySchema<"projects">
-};
 "framework": {
 	id: "framework";
   collection: "projects";

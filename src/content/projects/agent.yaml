@@ -3,3 +3,9 @@ projects:
   - name: Nano OpenCode
     description: AI-powered code generation and analysis agent.
     status: TBD
+  - name: Nano Evolve
+    description: Evolutionary algorithms for optimizing neural network architectures and hyperparameters.
+    status: TBD
+  - name: Nano Model NAS
+    description: Neural Architecture Search framework for automated model design.
+    status: TBD
