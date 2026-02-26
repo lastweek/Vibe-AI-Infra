@@ -11,6 +11,7 @@ const projects = defineCollection({
       goals: z.array(z.string()).optional(),
       status: z.enum(['TBD', 'WIP', 'Done']),
       intro: z.string().optional(),
+      architecture: z.string().optional(),
     }))
   })
 });

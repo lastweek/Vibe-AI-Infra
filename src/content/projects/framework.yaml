@@ -11,10 +11,11 @@ projects:
     status: WIP
   - name: Nano Train
     repo: nano-train
-    description: Production-grade distributed LLM training framework implementing tensor, pipeline, and data parallelism for training models from 125M to 671B parameters.
-    status: TBD
+    description: Production-grade distributed LLM training framework with comprehensive model analysis tools including roofline bottleneck detection and performance optimization guidance.
+    status: WIP
+    architecture: /nano-train-arch.jpg
     intro: |
-      Nano Train is a production-grade distributed training framework built from scratch to train state-of-the-art language models like DeepSeek-R1 (671B Mixture-of-Experts). The framework implements comprehensive parallelism strategies similar to Megatron-LM with a cleaner, more modular architecture.
+      Nano Train is a production-grade distributed training framework built from scratch to train state-of-the-art language models like DeepSeek-V3 (671B Mixture-of-Experts). The framework implements comprehensive parallelism strategies similar to Megatron-LM with a cleaner, more modular architecture.
 
       ## Project Overview
 
@@ -27,6 +28,14 @@ projects:
       - Loss decreased from ~3.5 to 0.0000
       - Features: Basic transformer, training loop, optimizer, scheduler, data loader
 
+      **Model Analysis Capabilities** - Comprehensive performance analysis:
+      - `dump_model_info()` function for deep architectural insights
+      - Roofline analysis identifying compute vs memory bottlenecks
+      - FLOPs/bytes decomposition across training, prefill, and decode phases
+      - Sensitivity analysis for optimization guidance
+      - Support for complex architectures (MLA attention, MoE routing)
+      - Executive summaries with actionable next steps
+
       ## Architecture
 
       The framework follows a clean, modular architecture with distinct components:
@@ -36,6 +45,7 @@ projects:
       - **parallelism/** - Parallelism strategies (tensor, pipeline, data)
       - **training/** - Training infrastructure (loops, checkpoints, logging)
       - **data/** - Data loading and preprocessing
+      - **analysis/** - Model performance analysis and bottleneck detection
 
       ## Key Technologies
 
@@ -44,6 +54,8 @@ projects:
       - **TensorBoard** - Comprehensive metrics tracking
       - **Cosine Annealing** - Learning rate scheduling with warmup
       - **AdamW** - Optimizer with weight decay
+      - **Roofline Analysis** - Performance bottleneck identification
+      - **Static Time Modeling** - Predict performance without runtime profiling
 
       ## Development Roadmap
 
@@ -61,6 +73,7 @@ projects:
       - **Progressive Scaling**: From 125M MVP to 671B MoE models
       - **Clean Architecture**: Modular design with clear separation of concerns
       - **Comprehensive Logging**: TensorBoard integration for metrics tracking
+      - **Model Analysis Tools**: Roofline analysis and bottleneck detection for optimization guidance
   - name: Nano Serving
     description: Model serving and inference optimization system.
     status: TBD

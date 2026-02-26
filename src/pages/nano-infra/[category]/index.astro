@@ -83,6 +83,12 @@ const sortedProjects = [...projects].sort((a, b) => statusOrder[a.status] - stat
         <span class="badge" style={`background: ${categoryColor[category]}`}>{category}</span>
         <h1>{category} Layer</h1>
         <p class="subtitle">{categoryWhyText}</p>
+
+        {category === 'Virt' && (
+          <div class="overview-image-container">
+            <img src="/virt-overview.jpg" alt="Virt Layer Overview - Architecture diagram showing Vibe KVM, Vibe VMM, and Nano Sandbox" class="overview-image" />
+          </div>
+        )}
       </header>
 
       <section class="projects-section" id="projects" data-toc>
@@ -245,6 +251,21 @@ const sortedProjects = [...projects].sort((a, b) => statusOrder[a.status] - stat
     font-size: 1.07rem;
     color: var(--muted);
     line-height: 1.7;
+  }
+
+  .overview-image-container {
+    margin-top: 28px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .overview-image {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   .section-header {

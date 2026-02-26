@@ -37,6 +37,9 @@
               },
               "intro": {
                 "type": "string"
+              },
+              "architecture": {
+                "type": "string"
               }
             },
             "required": [

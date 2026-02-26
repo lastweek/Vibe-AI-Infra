@@ -75,6 +75,7 @@ const { project, category, categorySlug, allCategories, canonicalHref } = Astro.
 const whyLead = categoryWhy[category] ?? 'This project supports core AGI infrastructure capabilities.';
 const repoUrl = project.repo ? `https://github.com/lastweek/${project.repo}` : null;
 const introHtml = project.intro ? marked.parse(project.intro) : null;
+const architectureUrl = project.architecture || null;
 ---
 
 <Layout title={`${project.name} | Vibe Nano`} description={project.description}>
@@ -120,6 +121,12 @@ const introHtml = project.intro ? marked.parse(project.intro) : null;
       <h1>{project.name}</h1>
       <p class="summary">{project.description}</p>
 
+      {architectureUrl && (
+        <div class="arch-image-container">
+          <img src={architectureUrl} alt={`${project.name} Architecture Diagram`} class="arch-image" />
+        </div>
+      )}
+
       <section id="why" class="section" data-toc>
         <h2>Why This Is Important for AGI Infrastructure</h2>
         <p>{whyLead}</p>
@@ -149,6 +156,11 @@ const introHtml = project.intro ? marked.parse(project.intro) : null;
         <section id="overview" class="section" data-toc>
           <h2>Overview</h2>
           <div class="intro-content" set:html={introHtml} />
+          {architectureUrl && (
+            <div class="arch-image-container">
+              <img src={architectureUrl} alt={`${project.name} Architecture Diagram`} class="arch-image" />
+            </div>
+          )}
         </section>
       )}
     </article>
@@ -338,6 +350,20 @@ const introHtml = project.intro ? marked.parse(project.intro) : null;
     color: #92400e;
   }
 
+  .arch-image-container {
+    margin-top: 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+  }
+
+  .arch-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .eyebrow {
     margin-top: 12px;
     text-transform: uppercase;
@@ -401,6 +427,10 @@ const introHtml = project.intro ? marked.parse(project.intro) : null;
 
   .intro-content {
     margin-top: 12px;
+  }
+
+  .intro-content .arch-image-container {
+    margin-top: 24px;
   }
 
   .intro-content :global(h2) {

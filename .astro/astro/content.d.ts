@@ -194,6 +194,13 @@ declare module 'astro:content' {
   collection: "til";
   data: InferEntrySchema<"til">
 } & { render(): Render[".md"] };
+"2025-02-18-model-info-analysis.md": {
+	id: "2025-02-18-model-info-analysis.md";
+  slug: "2025-02-18-model-info-analysis";
+  body: string;
+  collection: "til";
+  data: InferEntrySchema<"til">
+} & { render(): Render[".md"] };
 };
 
 	};
