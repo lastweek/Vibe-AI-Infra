@@ -201,6 +201,13 @@ declare module 'astro:content' {
   collection: "til";
   data: InferEntrySchema<"til">
 } & { render(): Render[".md"] };
+"2026-02-27-mixed-precision-fp8.md": {
+	id: "2026-02-27-mixed-precision-fp8.md";
+  slug: "2026-02-27-mixed-precision-fp8";
+  body: string;
+  collection: "til";
+  data: InferEntrySchema<"til">
+} & { render(): Render[".md"] };
 };
 
 	};
