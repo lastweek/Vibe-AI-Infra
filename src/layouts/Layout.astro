@@ -22,7 +22,7 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -37,22 +37,54 @@ const {
 
 <style is:global>
   :root {
-    --font-display: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
-    --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
-    --ink: #0f1c2e;
-    --ink-soft: #2b3a4f;
-    --muted: #5f6f85;
-    --line: #dce5f1;
-    --surface: #ffffff;
-    --accent: #2563eb;
-    --accent-hover: #1e4ec7;
-    --bg: #f3f7fd;
-    /* Compatibility aliases for existing component/page styles */
-    --primary: var(--ink);
-    --primary-light: var(--ink-soft);
-    --border: var(--line);
-    --success: #15803d;
-    --warning: #b45309;
+    --font-display: 'Instrument Sans', 'SF Pro Display', -apple-system, sans-serif;
+    --font-body: 'Instrument Sans', 'SF Pro Text', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+
+    /* Research lab palette - warm off-white with crisp technical accents */
+    --bg-base: #fafbf8;
+    --bg-elevated: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card-hover: rgba(255, 255, 255, 1);
+
+    /* Text colors - warm grey scale */
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a5568;
+    --text-tertiary: #718096;
+    --text-muted: #a0aec0;
+
+    /* Accent colors - technical blue + warm accent */
+    --accent-primary: #2563eb;
+    --accent-secondary: #f59e0b;
+    --accent-blue: #0891b2;
+    --accent-pink: #db2777;
+
+    /* Status colors */
+    --status-done: #059669;
+    --status-wip: #d97706;
+    --status-tbd: #9ca3af;
+
+    /* Lines and borders */
+    --line-subtle: rgba(0, 0, 0, 0.04);
+    --line-default: rgba(0, 0, 0, 0.08);
+    --line-strong: rgba(0, 0, 0, 0.12);
+
+    /* Effects */
+    --glow-primary: rgba(37, 99, 235, 0.08);
+    --glow-secondary: rgba(245, 158, 11, 0.08);
+
+    /* Spacing scale */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
   }
 
   * {
@@ -68,24 +100,32 @@ const {
 
   body {
     font-family: var(--font-body);
-    color: var(--ink);
-    background:
-      radial-gradient(circle at 10% 12%, rgba(37, 99, 235, 0.14), transparent 34%),
-      radial-gradient(circle at 90% 18%, rgba(14, 165, 233, 0.14), transparent 38%),
-      linear-gradient(180deg, #f9fbff 0%, var(--bg) 100%);
+    color: var(--text-primary);
+    background-color: var(--bg-base);
+    background-image:
+      /* Subtle technical grid */
+      linear-gradient(var(--line-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-subtle) 1px, transparent 1px),
+      /* Warm radial gradient */
+      radial-gradient(ellipse 100% 60% at 50% 0%, rgba(37, 99, 235, 0.02), transparent 60%),
+      linear-gradient(180deg, var(--bg-base) 0%, #f5f5f0 100%);
+    background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+    background-attachment: fixed;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Subtle paper texture */
   .grain {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.03;
-    background-image: radial-gradient(#000 0.4px, transparent 0.4px);
-    background-size: 4px 4px;
-    z-index: -1;
+    z-index: 1000;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
   }
 
   a {
@@ -108,13 +148,50 @@ const {
     }
   }
 
-  /* Mermaid diagram styling */
+  /* Selection styling */
+  ::selection {
+    background: rgba(37, 99, 235, 0.2);
+    color: var(--text-primary);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-base);
+    border: 1px solid var(--line-subtle);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: var(--radius-sm);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
+  }
+
+  /* Mermaid diagram styling - light mode */
   :global(.content-prose img[src*="/mermaid/"]) {
     margin: 1.5rem 0;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-md);
     max-width: 100%;
     height: auto;
+  }
+
+  /* Code block improvements */
+  pre {
+    background: #f8f9fa !important;
+    border: 1px solid var(--line-default) !important;
+  }
+
+  code {
+    font-family: var(--font-mono) !important;
   }
 </style>

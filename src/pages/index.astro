@@ -52,120 +52,220 @@ import Layout from '../layouts/Layout.astro';
   .landing {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 72px 20px 98px;
+    padding: 88px 20px 98px;
   }
 
   .hero {
-    max-width: 860px;
-    margin-bottom: 24px;
+    max-width: 900px;
+    margin-bottom: 32px;
   }
 
   .eyebrow {
     display: inline-flex;
-    margin-bottom: 14px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
     text-transform: uppercase;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    color: #1e40af;
-    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-family: var(--font-mono);
+  }
+
+  .eyebrow::before {
+    content: '>';
+    opacity: 0.4;
   }
 
   h1 {
     font-family: var(--font-display);
-    letter-spacing: -0.03em;
-    line-height: 1.02;
-    font-size: clamp(2.4rem, 7vw, 5.3rem);
-    max-width: 15ch;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    max-width: 14ch;
+    color: var(--text-primary);
+  }
+
+  .eyebrow::before {
+    content: '>';
+    opacity: 0.6;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    max-width: 14ch;
+    color: var(--text-primary);
+    text-shadow: 0 0 80px rgba(191, 255, 0, 0.1);
   }
 
   .hero-copy {
-    margin-top: 16px;
-    color: var(--muted);
-    font-size: 1.08rem;
-    line-height: 1.75;
-    max-width: 64ch;
+    margin-top: 24px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 62ch;
+    font-weight: 400;
+  }
+
+  .hero-copy strong {
+    color: var(--text-primary);
+    font-weight: 600;
   }
 
   .vision-strip {
-    margin-top: 20px;
-    margin-bottom: 22px;
-    max-width: 930px;
-    padding: 16px 18px;
-    border-radius: 12px;
-    border: 1px solid #bfdbfe;
-    background: linear-gradient(130deg, rgba(219, 234, 254, 0.75), rgba(224, 242, 254, 0.68));
+    margin-top: 32px;
+    margin-bottom: 28px;
+    max-width: 100%;
+    padding: 18px 22px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line-default);
+    background: var(--bg-elevated);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vision-strip::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+    opacity: 0.3;
   }
 
   .vision-strip p {
-    color: #1e3a8a;
+    color: var(--text-secondary);
     font-size: 0.95rem;
     line-height: 1.7;
     font-weight: 500;
+    font-family: var(--font-mono);
   }
 
   .focus-grid {
-    margin-top: 24px;
+    margin-top: 32px;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 16px;
   }
 
   .focus-card {
     display: flex;
     flex-direction: column;
-    min-height: 260px;
-    border-radius: 16px;
-    padding: 22px;
-    border: 1px solid var(--line);
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
-    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    min-height: 280px;
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    border: 1px solid var(--line-default);
+    background: var(--bg-card);
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+    transition: all 220ms ease;
+  }
+
+  .focus-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    opacity: 0;
+    transition: opacity 220ms ease;
   }
 
   .focus-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+    background: var(--bg-card-hover);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .focus-card:hover::before {
+    opacity: 0.5;
+  }
+
+  .focus-card.nano {
+    color: var(--accent-primary);
+  }
+
+  .focus-card.insights {
+    color: var(--accent-secondary);
   }
 
   .badge {
     display: inline-flex;
     align-self: flex-start;
-    border-radius: 999px;
-    padding: 0.26rem 0.58rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    margin-bottom: 16px;
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    border: 1px solid currentColor;
+    background: transparent;
   }
 
   .nano .badge {
-    background: #dbeafe;
-    color: #1e40af;
+    color: var(--accent-primary);
+    border-color: rgba(37, 99, 235, 0.2);
+    background: rgba(37, 99, 235, 0.08);
   }
 
   .insights .badge {
-    background: #e0f2fe;
-    color: #075985;
+    color: var(--accent-secondary);
+    border-color: rgba(245, 158, 11, 0.2);
+    background: rgba(245, 158, 11, 0.08);
   }
 
   h2 {
     font-family: var(--font-display);
-    font-size: 1.45rem;
-    letter-spacing: -0.02em;
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
   }
 
   .focus-card p {
-    margin-top: 11px;
-    color: var(--muted);
-    font-size: 0.98rem;
+    margin-top: 14px;
+    color: var(--text-secondary);
+    font-size: 1rem;
     line-height: 1.7;
   }
 
   .jump {
     margin-top: auto;
-    color: var(--accent);
+    color: var(--text-primary);
     font-size: 0.9rem;
-    font-weight: 700;
-    padding-top: 18px;
+    font-weight: 600;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    transition: gap 160ms ease;
+  }
+
+  .focus-card:hover .jump {
+    gap: 10px;
+  }
+
+  .jump::after {
+    content: '→';
+    transition: transform 160ms ease;
+  }
+
+  .focus-card:hover .jump::after {
+    transform: translateX(4px);
   }
 
   @media (max-width: 900px) {
@@ -174,7 +274,7 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .focus-card {
-      min-height: 220px;
+      min-height: 240px;
     }
   }
 </style>

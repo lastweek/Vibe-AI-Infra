@@ -165,6 +165,79 @@ const architectureUrl = project.architecture || null;
       )}
     </article>
   </main>
+
+  {introHtml && (
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  )}
+
+  {introHtml && (
+    <script is:inline>
+      window.addEventListener('load', async () => {
+        console.log('Page loaded, checking for mermaid...');
+
+        if (!window.mermaid) {
+          console.error('Mermaid failed to load');
+          return;
+        }
+
+        console.log('Mermaid loaded, initializing...');
+
+        // Initialize mermaid
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'default',
+          securityLevel: 'loose',
+          fontFamily: 'SF Mono, Menlo, Monaco, Consolas, monospace',
+          fontSize: 14,
+          flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis'
+          }
+        });
+
+        // Find all mermaid code blocks in intro content
+        const mermaidBlocks = document.querySelectorAll('.intro-content pre > code[class*="language-mermaid"]');
+
+        console.log(`Found ${mermaidBlocks.length} mermaid blocks`);
+
+        if (mermaidBlocks.length === 0) {
+          console.log('No mermaid blocks found');
+          return;
+        }
+
+        const uniqueId = Math.random().toString(36).substr(2, 9);
+
+        for (let index = 0; index < mermaidBlocks.length; index++) {
+          const block = mermaidBlocks[index];
+          const code = block.textContent;
+          const id = `mermaid-${uniqueId}-${index}`;
+
+          console.log(`Rendering mermaid diagram ${index}`);
+
+          // Get the pre element
+          const preElement = block.parentElement;
+
+          // Create a container for the rendered diagram
+          const diagramContainer = document.createElement('div');
+          diagramContainer.className = 'mermaid-container';
+
+          // Replace the pre block with the diagram container
+          preElement.replaceWith(diagramContainer);
+
+          // Render the diagram
+          try {
+            const { svg } = await mermaid.render(id, code);
+            diagramContainer.innerHTML = svg;
+            console.log(`Successfully rendered mermaid diagram ${index}`);
+          } catch (error) {
+            console.error('Mermaid rendering error:', error);
+            diagramContainer.innerHTML = `<pre class="mermaid-error">Error rendering diagram: ${error.message}</pre>`;
+          }
+        }
+      });
+    </script>
+  )}
 </Layout>
 
 <style>
@@ -191,25 +264,26 @@ const architectureUrl = project.architecture || null;
 
   .toc-card {
     position: static;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid var(--line);
-    border-radius: 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-lg);
     padding: 14px;
   }
 
   .toc-title {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 10px;
-    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-family: var(--font-mono);
   }
 
   .toc-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 4px;
     max-height: 520px;
     overflow: auto;
   }
@@ -217,56 +291,62 @@ const architectureUrl = project.architecture || null;
   .toc-category {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
 
   .toc-category-label {
-    font-size: 0.72rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--ink);
-    padding: 0.25rem 0.45rem;
-    border-radius: 6px;
-    background: #f0f4f8;
+    color: var(--text-primary);
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-base);
     text-decoration: none;
     display: block;
+    font-family: var(--font-mono);
+    border: 1px solid var(--line-subtle);
   }
 
   .toc-category-label:hover {
-    background: #e5eef5;
+    background: var(--bg-elevated);
+    border-color: var(--line-default);
   }
 
   .toc-list a {
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-    padding: 0.25rem 0.45rem 0.25rem 1rem;
-    border-radius: 6px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 0.35rem 0.5rem 0.35rem 1rem;
+    border-radius: var(--radius-sm);
     margin-left: 0.25rem;
     text-decoration: none;
     display: block;
+    transition: all 140ms ease;
   }
 
   .toc-list a:hover {
-    background: #eef4ff;
-    color: var(--ink);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
   }
 
   .toc-list a.active {
-    background: #dbeafe;
-    color: #1d4ed8;
-    font-weight: 600;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent-primary);
+    font-weight: 500;
+    border-left: 2px solid var(--accent-primary);
+    padding-left: calc(1rem - 2px);
   }
 
   .content {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid var(--line);
-    border-radius: 16px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-lg);
     padding: 28px;
   }
 
   .back-link {
-    color: var(--accent);
+    color: var(--accent-primary);
     font-size: 0.9rem;
     font-weight: 500;
   }
@@ -277,21 +357,22 @@ const architectureUrl = project.architecture || null;
     gap: 12px;
     margin: 16px 0;
     padding: 14px 18px;
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-    border: 1px solid #3b82f6;
-    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: var(--radius-lg);
     text-decoration: none;
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    transition: all 180ms ease;
   }
 
   .repo-banner:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
+    box-shadow: 0 8px 24px var(--glow-primary);
+    border-color: rgba(37, 99, 235, 0.3);
   }
 
   .repo-icon {
     font-size: 1.5rem;
-    color: #60a5fa;
+    color: var(--accent-primary);
   }
 
   .repo-info {
@@ -306,18 +387,21 @@ const architectureUrl = project.architecture || null;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #93c5fd;
+    color: var(--accent-primary);
+    font-family: var(--font-mono);
+    opacity: 0.9;
   }
 
   .repo-name {
     font-size: 0.95rem;
     font-weight: 600;
-    color: white;
+    color: var(--text-primary);
   }
 
   .repo-arrow {
     font-size: 1.2rem;
-    color: #93c5fd;
+    color: var(--accent-primary);
+    opacity: 0.8;
   }
 
   .tbd-banner {
@@ -326,9 +410,9 @@ const architectureUrl = project.architecture || null;
     gap: 12px;
     margin: 16px 0;
     padding: 14px 18px;
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1));
-    border: 1px solid #fbbf24;
-    border-radius: 12px;
+    background: rgba(82, 82, 91, 0.15);
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-lg);
   }
 
   .tbd-badge {
@@ -336,9 +420,9 @@ const architectureUrl = project.architecture || null;
     align-items: center;
     justify-content: center;
     padding: 0.25rem 0.6rem;
-    background: #fbbf24;
-    color: #78350f;
-    border-radius: 999px;
+    background: var(--status-tbd);
+    color: var(--text-tertiary);
+    border-radius: var(--radius-sm);
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -347,15 +431,15 @@ const architectureUrl = project.architecture || null;
 
   .tbd-text {
     font-size: 0.9rem;
-    color: #92400e;
+    color: var(--text-secondary);
   }
 
   .arch-image-container {
     margin-top: 16px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    background: white;
+    background: var(--bg-base);
   }
 
   .arch-image {
@@ -367,22 +451,26 @@ const architectureUrl = project.architecture || null;
   .eyebrow {
     margin-top: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.09em;
-    font-size: 0.72rem;
-    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-family: var(--font-mono);
   }
 
   h1 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
     font-size: clamp(2rem, 5vw, 3rem);
-    line-height: 1.08;
+    line-height: 1.06;
     margin-top: 8px;
+    color: var(--text-primary);
   }
 
   .summary {
     margin-top: 12px;
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.75;
     max-width: 68ch;
@@ -394,14 +482,16 @@ const architectureUrl = project.architecture || null;
 
   h2 {
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 1.45rem;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     margin-bottom: 10px;
+    color: var(--text-primary);
   }
 
   .section p,
   li {
-    color: var(--ink-soft);
+    color: var(--text-secondary);
     line-height: 1.75;
     font-size: 0.98rem;
   }
@@ -421,7 +511,7 @@ const architectureUrl = project.architecture || null;
     content: '•';
     position: absolute;
     left: 0;
-    color: var(--accent);
+    color: var(--accent-primary);
     font-weight: 700;
   }
 
@@ -435,24 +525,26 @@ const architectureUrl = project.architecture || null;
 
   .intro-content :global(h2) {
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 1.3rem;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
-    color: var(--ink);
+    color: var(--text-primary);
   }
 
   .intro-content :global(h3) {
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 1.15rem;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     margin-top: 1.25em;
     margin-bottom: 0.4em;
-    color: var(--ink);
+    color: var(--text-primary);
   }
 
   .intro-content :global(p) {
-    color: var(--ink-soft);
+    color: var(--text-secondary);
     line-height: 1.75;
     margin-bottom: 1em;
   }
@@ -465,21 +557,50 @@ const architectureUrl = project.architecture || null;
 
   .intro-content :global(li) {
     padding: 0.25rem 0;
-    color: var(--ink-soft);
+    color: var(--text-secondary);
   }
 
   .intro-content :global(code) {
     font-size: 0.9em;
-    background: #eaf1ff;
-    padding: 0.15rem 0.35rem;
-    border-radius: 4px;
-    color: #1e40af;
-    font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+    background: rgba(37, 99, 235, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+    color: var(--accent-primary);
+    font-family: var(--font-mono);
   }
 
   .intro-content :global(strong) {
     font-weight: 600;
-    color: var(--ink);
+    color: var(--text-primary);
+  }
+
+  .mermaid-container {
+    margin: 28px 0;
+    border: 1px solid var(--line-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: #ffffff;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .mermaid-container :global(svg) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .mermaid-container :global(.node) {
+    font-family: var(--font-mono) !important;
+  }
+
+  .mermaid-error {
+    padding: 16px;
+    background: rgba(255, 107, 0, 0.1);
+    color: var(--accent-secondary);
+    border: 1px solid rgba(255, 107, 0, 0.3);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    text-align: left;
   }
 
   @media (max-width: 980px) {

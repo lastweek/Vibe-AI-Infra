@@ -11,69 +11,217 @@ projects:
     status: WIP
   - name: Nano Train
     repo: nano-train
-    description: Production-grade distributed LLM training framework with comprehensive model analysis tools including roofline bottleneck detection and performance optimization guidance.
+    description: Learning-first distributed LLM training framework built around Megatron-style parallelism, covering TP, PP, EP, DP, ZeRO-1/2, and mixed precision on a DeepSeek-style model stack.
     status: WIP
-    architecture: /nano-train-arch.jpg
     intro: |
-      Nano Train is a production-grade distributed training framework built from scratch to train state-of-the-art language models like DeepSeek-V3 (671B Mixture-of-Experts). The framework implements comprehensive parallelism strategies similar to Megatron-LM with a cleaner, more modular architecture.
+      `nano-train` is a learning-first distributed LLM training repo built around Megatron-style parallelism. It started as a compact training sandbox and has gradually grown into a reusable runtime-backed system that now covers TP, PP, EP, DP, ZeRO-1/2, and mixed precision on a DeepSeek-style model stack.
 
-      ## Project Overview
+      ## What Nano-Train Is
 
-      The framework addresses the challenge of training massive language models efficiently across distributed compute environments. It supports Mixture-of-Experts architectures and 3D parallelism (tensor, pipeline, data, sequence, and expert parallelism) designed to scale from 125M to 671B parameters on 1000+ GPUs.
+      - A practical repo for understanding how modern distributed training systems are assembled, not just how a single training loop runs
+      - A runtime-backed training system where orchestration lives in `src/runtime/*` and scenario wiring lives in thin entry scripts under `examples/`
+      - A reusable model-building stack where parallelism-aware and precision-aware primitives in `src/layers.py` are composed into reusable blocks and full model stacks
+      - A place to study Megatron-style concepts concretely: tensor parallelism, pipeline parallelism, expert parallelism, data parallelism, optimizer sharding, and low-bit training
 
-      ## Current Status
+      ## What It Can Do Today
 
-      **Phase 0 Complete** - MVP training cycle working successfully:
-      - Trained 125M parameter GPT-style model (33 minutes, 1000 steps)
-      - Loss decreased from ~3.5 to 0.0000
-      - Features: Basic transformer, training loop, optimizer, scheduler, data loader
-
-      **Model Analysis Capabilities** - Comprehensive performance analysis:
-      - `dump_model_info()` function for deep architectural insights
-      - Roofline analysis identifying compute vs memory bottlenecks
-      - FLOPs/bytes decomposition across training, prefill, and decode phases
-      - Sensitivity analysis for optimization guidance
-      - Support for complex architectures (MLA attention, MoE routing)
-      - Executive summaries with actionable next steps
+      - **Parallel training**: TP, PP, EP, DP, and their combined 4D tutorial path are built and runnable through `examples/train_4d.py`
+      - **Training runtime**: a reusable `RuntimeEngine` and `RuntimeComponents` model now powers `train_4d`, `train_tp`, `train_ddp`, and `train_mvp`
+      - **Optimization/runtime systems**: ZeRO-1/2, mixed precision (`bf16`, `fp16`, `fp8`, `fp4`), DeepSeek-V3-style FP8 recipe support, and optimizer-owned low-bit master weight paths are implemented
+      - **Checkpoint/runtime interface**: the current ZeRO checkpoint path uses format v2 in the current implementation
+      - **Model/tutorial stack**: low-level precision-aware and parallelism-aware layer primitives, reusable attention/MLP/MoE blocks, `TransformerModel`, `DeepSeekModel`, TP/DDP/MVP examples, monitoring utilities, and model inspection tooling are included
 
       ## Architecture
 
-      The framework follows a clean, modular architecture with distinct components:
+      `nano-train` has two important architectural layers. The runtime layer explains how training is orchestrated across scripts, schedules, and checkpoint hooks. The model-building layer explains how reusable low-level layer primitives are composed into blocks and then into concrete model stacks.
 
-      - **core/** - Infrastructure and foundational components
-      - **models/** - Model architectures (GPT-style transformers)
-      - **parallelism/** - Parallelism strategies (tensor, pipeline, data)
-      - **training/** - Training infrastructure (loops, checkpoints, logging)
-      - **data/** - Data loading and preprocessing
-      - **analysis/** - Model performance analysis and bottleneck detection
+      ### Training Orchestration View
 
-      ## Key Technologies
+      This view shows how training runs. Entry scripts stay thin, assemble `RuntimeComponents`, and delegate orchestration to `RuntimeEngine`.
 
-      - **PyTorch** - Industry standard with best distributed support
-      - **BF16** - Primary precision for better numerical stability
-      - **TensorBoard** - Comprehensive metrics tracking
-      - **Cosine Annealing** - Learning rate scheduling with warmup
-      - **AdamW** - Optimizer with weight decay
-      - **Roofline Analysis** - Performance bottleneck identification
-      - **Static Time Modeling** - Predict performance without runtime profiling
+      ```mermaid
+      flowchart TD
+        subgraph E["Entry Scripts (`examples/`)"]
+          E1["train_4d.py"]
+          E2["train_tp.py"]
+          E3["train_ddp.py"]
+          E4["train_mvp.py"]
+          E5["Parse args + assemble RuntimeComponents"]
+        end
 
-      ## Development Roadmap
+        subgraph C["Component Bundle (`RuntimeComponents`)"]
+          C0["RuntimeComponents"]
+          C1["RuntimeBootstrap"]
+          C2["ModelProvider"]
+          C3["DataProvider"]
+          C4["OptimizerRuntime"]
+          C5["ScheduleSelector"]
+          C6["ScheduleStrategy"]
+          C7["CheckpointManager"]
+        end
 
-      The project follows a 36-week phased roadmap:
+        subgraph R["Runtime Engine (`src/runtime/engine.py`)"]
+          R0["RuntimeEngine.run(...)"]
+          R1["build_context"]
+          R2["build model/data"]
+          R3["init optimizer state"]
+          R4["select schedule"]
+          R5["load checkpoint"]
+          R6["step loop"]
+          R7["checkpoint hooks"]
+          R8["finalize + destroy process group"]
+        end
 
-      - **Phase 0** (Weeks 1-3): MVP ✅ Complete
-      - **Phase 1** (Weeks 4-6): Production foundation with OmegaConf + Hydra
-      - **Phase 2** (Weeks 7-10): Flash Attention, gradient checkpointing
-      - **Phase 3-11**: Sequential implementation of parallelism strategies
-      - **Final Goal**: 671B MoE model training at scale
+        subgraph H["Runtime Helpers (`src/runtime/*`)"]
+          H1["sync.py"]
+          H2["pipeline.py"]
+          H3["optimizer_runtime.py"]
+          H4["checkpoint.py"]
+        end
 
-      ## Key Innovations
+        E1 --> E5
+        E2 --> E5
+        E3 --> E5
+        E4 --> E5
+        E5 --> C0
+        C0 --> R0
 
-      - **Automated Workflow**: Sync script for seamless local-to-cloud development
-      - **Progressive Scaling**: From 125M MVP to 671B MoE models
-      - **Clean Architecture**: Modular design with clear separation of concerns
-      - **Comprehensive Logging**: TensorBoard integration for metrics tracking
-      - **Model Analysis Tools**: Roofline analysis and bottleneck detection for optimization guidance
+        C0 --> C1
+        C0 --> C2
+        C0 --> C3
+        C0 --> C4
+        C0 --> C5
+        C5 --> C6
+        C0 --> C7
+
+        C1 --> R1
+        C2 --> R2
+        C3 --> R2
+        C4 --> R3
+        C5 --> R4
+        C7 --> R5
+
+        R0 --> R1
+        R1 --> R2
+        R2 --> R3
+        R3 --> R4
+        R4 --> R5
+        R5 --> R6
+        R6 --> C6
+        C6 --> R6
+        R6 --> R7
+        R7 --> R8
+
+        C4 -. uses .-> H1
+        C6 -. uses .-> H2
+        C4 -. uses .-> H3
+        C7 -. uses .-> H4
+        R0 -. uses .-> H2
+        R0 -. uses .-> H4
+      ```
+
+      ### Model Construction View
+
+      This view shows the reusable internal architecture that sits below the runtime shell. Precision policy and parallel-aware execution feed into low-level layer primitives, which are composed into model blocks and then concrete model stacks.
+
+      ```mermaid
+      flowchart TD
+        subgraph P["Precision / Parallel Support"]
+          P1["mixed_precision.py"]
+          P2["te_backend.py"]
+          P3["master_store.py"]
+        end
+
+        subgraph L["Low-Level Layer Primitives (`src/layers.py`)"]
+          L1["Linear family<br/>Linear / ColumnParallelLinear / RowParallelLinear"]
+          L2["State + norm family<br/>Embedding / LayerNorm / RMSNorm"]
+          L3["Utility ops<br/>Dropout / GELU / TP collectives"]
+        end
+
+        subgraph B["Reusable Model Blocks (`src/models/*`)"]
+          B1["Attention blocks<br/>MultiHeadAttention / MLA"]
+          B2["MLP blocks<br/>MLP / GatedMLP"]
+          B3["MoE blocks<br/>TopKRouter / ExpertMLP / LocalRoutedMoE / ExpertParallelMoE"]
+        end
+
+        subgraph M["Concrete Model Stacks"]
+          M1["TransformerModel"]
+          M2["DeepSeekModel"]
+          M3["Custom models from the same blocks"]
+        end
+
+        subgraph E2["Runtime Entry Scripts"]
+          E21["train_tp.py"]
+          E22["train_ddp.py"]
+          E23["train_mvp.py"]
+          E24["train_4d.py"]
+        end
+
+        P1 --> L1
+        P1 --> L2
+        P2 --> L1
+        P3 --> L1
+
+        L1 --> B1
+        L1 --> B2
+        L1 --> B3
+        L2 --> B1
+        L2 --> B2
+        L2 --> B3
+        L3 --> B1
+        L3 --> B2
+
+        B1 --> M1
+        B2 --> M1
+        B1 --> M2
+        B2 --> M2
+        B3 --> M2
+        B1 --> M3
+        B2 --> M3
+        B3 --> M3
+
+        M1 --> E21
+        M1 --> E22
+        M1 --> E23
+        M2 --> E24
+        M3 --> E24
+      ```
+
+      `src/layers.py` is the reusable foundation for both precision-aware and parallelism-aware execution. `src/models/*` builds higher-level attention, MLP, and MoE blocks on top of those primitives. `TransformerModel` and `DeepSeekModel` are concrete examples, not special cases, and additional models can be built from the same internal layer stack.
+
+      ## Key Entrypoints
+
+      | Path | Purpose |
+      | --- | --- |
+      | `examples/train_4d.py` | Canonical 4D tutorial path: TP/PP/EP/DP + ZeRO-1/2 |
+      | `examples/train_tp.py` | Smaller TP + DP runtime-backed tutorial |
+      | `examples/train_ddp.py` | DDP-focused runtime-backed example |
+      | `examples/train_mvp.py` | MVP training path wired through the runtime |
+      | `src/runtime/engine.py` | Orchestration engine for runtime-backed scripts |
+      | `src/runtime/contracts.py` | Component interfaces and runtime dataclasses |
+      | `src/runtime/mixed_precision.py` | Precision policy, autocast, scaling, and low-bit wiring |
+      | `src/distributed/zero.py` | Megatron-style ZeRO-1/2 optimizer implementation |
+      | `src/layers.py` | Low-level parallelism-aware and precision-aware layer primitives |
+      | `src/models/attention.py` | Reusable attention blocks used by transformer-style models |
+      | `src/models/mlp.py` | Reusable feed-forward blocks used across model stacks |
+      | `src/models/deepseek.py` | DeepSeek-style decoder and parallel-context model path |
+      | `src/models/moe.py` | Routed MoE layers and expert-parallel communication |
+
+      ## How We Got Here
+
+      1. **Bootstrap**: the repo started as a compact training playground with native layers, basic model pieces, and runnable examples so the core mechanics were easy to inspect
+      2. **MVP trainer/model stack**: the training loop and model/config stack became structured enough to support more than one toy path, which created a base for later refactors
+      3. **Monitoring and observability**: stability and performance metrics were added so training behavior could be diagnosed instead of guessed
+      4. **TP + DP tutorial path**: tensor/data parallelism moved the repo from single-process demos into real distributed tutorial territory
+      5. **EP + DeepSeek-style MoE**: routed experts, expert parallelism, and a DeepSeek-style model stack made the repo reflect more modern large-model training patterns
+      6. **PP + 4D entrypoint**: pipeline support and `train_4d.py` made the project a true TP/PP/EP/DP tutorial system instead of separate isolated modes
+      7. **ZeRO-1/2 integration**: optimizer sharding added a memory/system dimension that matters for serious large-scale training
+      8. **Runtime core refactor**: orchestration was moved into `src/runtime/*`, leaving thin scripts and reusable engine/components rather than one-off training entrypoints
+      9. **Mixed precision expansion**: Megatron-style precision flags, DeepSeek-V3 recipe support, per-module low-bit policy, and config-first DeepSeek precision overrides completed the current runtime stack
+
+      ## Validation Status
+
+      At the time of this README refresh, the local full test suite passed with `pytest -q` showing **220 tests passed**.
   - name: Nano Serving
     description: Model serving and inference optimization system.
     status: TBD

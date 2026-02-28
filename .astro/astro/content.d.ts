@@ -208,6 +208,20 @@ declare module 'astro:content' {
   collection: "til";
   data: InferEntrySchema<"til">
 } & { render(): Render[".md"] };
+"2026-02-28-nano-rl-and-coder.md": {
+	id: "2026-02-28-nano-rl-and-coder.md";
+  slug: "2026-02-28-nano-rl-and-coder";
+  body: string;
+  collection: "til";
+  data: InferEntrySchema<"til">
+} & { render(): Render[".md"] };
+"2026-02-28-nano-train-journey.md": {
+	id: "2026-02-28-nano-train-journey.md";
+  slug: "2026-02-28-nano-train-journey";
+  body: string;
+  collection: "til";
+  data: InferEntrySchema<"til">
+} & { render(): Render[".md"] };
 };
 
 	};

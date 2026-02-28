@@ -138,8 +138,8 @@ const stackLayers = [
   .toc-card {
     position: sticky;
     top: 82px;
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-default);
     border-radius: 12px;
     padding: 14px;
   }
@@ -152,7 +152,7 @@ const stackLayers = [
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--muted);
+    color: var(--text-tertiary);
     margin-bottom: 10px;
     font-weight: 700;
   }
@@ -176,20 +176,20 @@ const stackLayers = [
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--ink);
+    color: var(--text-primary);
     padding: 0.25rem 0.45rem;
     border-radius: 6px;
-    background: #f0f4f8;
+    background: var(--bg-base);
     text-decoration: none;
   }
 
   .toc-category-label:hover {
-    background: #e5eef5;
+    background: var(--bg-elevated);
   }
 
   .toc-list a {
     font-size: 0.82rem;
-    color: var(--ink-soft);
+    color: var(--text-secondary);
     padding: 0.25rem 0.45rem 0.25rem 1rem;
     border-radius: 6px;
     margin-left: 0.25rem;
@@ -198,8 +198,8 @@ const stackLayers = [
   }
 
   .toc-list a:hover {
-    background: #eef4ff;
-    color: var(--ink);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
   }
 
   .page-header {
@@ -211,8 +211,8 @@ const stackLayers = [
   .badge {
     display: inline-block;
     padding: 0.32rem 0.75rem;
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: rgba(0, 217, 255, 0.15);
+    color: var(--accent-blue);
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -233,7 +233,7 @@ const stackLayers = [
     margin: 14px auto 0;
     max-width: 58ch;
     font-size: 1.07rem;
-    color: var(--muted);
+    color: var(--text-secondary);
   }
 
   .section-header {
@@ -250,7 +250,7 @@ const stackLayers = [
 
   .section-subtitle {
     margin-top: 8px;
-    color: var(--muted);
+    color: var(--text-tertiary);
     font-size: 0.94rem;
   }
 
@@ -267,7 +267,7 @@ const stackLayers = [
   }
 
   .stack-layer {
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-default);
     border-radius: 12px;
     padding: 16px 20px;
     display: grid;
@@ -279,16 +279,16 @@ const stackLayers = [
 
   .stack-layer:hover {
     transform: translateX(4px);
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
-    border-color: var(--accent);
+    box-shadow: 0 8px 20px rgba(191, 255, 0, 0.12);
+    border-color: var(--accent-primary);
   }
 
   .layer-index {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: rgba(37, 99, 235, 0.15);
-    color: var(--accent);
+    background: rgba(191, 255, 0, 0.15);
+    color: var(--accent-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -310,7 +310,7 @@ const stackLayers = [
   }
 
   .layer-description {
-    color: var(--ink-soft);
+    color: var(--text-secondary);
     font-size: 0.88rem;
     line-height: 1.6;
     margin: 0;
@@ -320,20 +320,20 @@ const stackLayers = [
     max-width: 700px;
     margin: 24px auto 0;
     padding: 18px 20px;
-    background: linear-gradient(135deg, rgba(219, 234, 254, 0.5), rgba(224, 242, 254, 0.3));
-    border: 1px solid #bfdbfe;
+    background: rgba(0, 217, 255, 0.08);
+    border: 1px solid rgba(0, 217, 255, 0.2);
     border-radius: 12px;
   }
 
   .stack-note p {
-    color: #1e3a8a;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     line-height: 1.7;
     margin: 0;
   }
 
   .stack-note strong {
-    color: #1e40af;
+    color: var(--accent-blue);
   }
 
   .table-section {
@@ -342,11 +342,11 @@ const stackLayers = [
 
   /* Simple Table Layout with Category Colors */
   :global(.table-wrapper) {
-    background: white;
-    border: 1px solid #cbd5e1;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-default);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
   :global(.projects-table) {
@@ -355,8 +355,8 @@ const stackLayers = [
   }
 
   :global(.projects-table thead) {
-    background: #f8fafc;
-    border-bottom: 2px solid #cbd5e1;
+    background: var(--bg-base);
+    border-bottom: 2px solid var(--line-default);
   }
 
   :global(.projects-table th) {
@@ -364,7 +364,7 @@ const stackLayers = [
     text-align: left;
     font-weight: 700;
     font-size: 0.75rem;
-    color: #475569;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     vertical-align: middle;
@@ -377,27 +377,27 @@ const stackLayers = [
 
   /* Category-specific row colors */
   :global(.projects-table tbody tr.category-silicon) {
-    background: #f8fafc;
+    background: rgba(252, 231, 243, 0.1);
   }
 
   :global(.projects-table tbody tr.category-virt) {
-    background: #ecfdf5;
+    background: rgba(254, 243, 199, 0.1);
   }
 
   :global(.projects-table tbody tr.category-compiler) {
-    background: #f0f9ff;
+    background: rgba(240, 253, 244, 0.1);
   }
 
   :global(.projects-table tbody tr.category-framework) {
-    background: #eef2ff;
+    background: rgba(224, 242, 254, 0.1);
   }
 
   :global(.projects-table tbody tr.category-agent) {
-    background: #f5f3ff;
+    background: rgba(191, 255, 0, 0.08);
   }
 
   :global(.projects-table tbody tr) {
-    border-bottom: 1px solid #cbd5e1;
+    border-bottom: 1px solid var(--line-default);
     cursor: pointer;
     transition: background-color 150ms ease;
   }
@@ -413,7 +413,7 @@ const stackLayers = [
   :global(.category-cell) {
     width: 15%;
     text-align: center;
-    border-right: 1px solid #cbd5e1;
+    border-right: 1px solid var(--line-default);
   }
 
   :global(.category-cell .category-badge) {
@@ -423,8 +423,8 @@ const stackLayers = [
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #1e3a8a;
-    background: rgba(255, 255, 255, 0.7);
+    color: var(--text-primary);
+    background: var(--bg-base);
     border-radius: 6px;
   }
 
@@ -437,7 +437,7 @@ const stackLayers = [
   :global(.project-name) {
     font-weight: 600;
     font-size: 0.95rem;
-    color: var(--ink);
+    color: var(--text-primary);
   }
 
   :global(.project-link) {
@@ -449,22 +449,22 @@ const stackLayers = [
   }
 
   :global(.project-link:hover) {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--bg-elevated);
   }
 
   :global(.github-link) {
-    color: #6b7d96;
+    color: var(--text-tertiary);
     transition: color 150ms ease;
     display: flex;
     align-items: center;
   }
 
   :global(.github-link:hover) {
-    color: var(--accent);
+    color: var(--accent-primary);
   }
 
   :global(.description-cell) {
-    color: #475569;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     line-height: 1.5;
   }

@@ -90,8 +90,8 @@ const insightLinks = insights.map((entry) => ({
   .toc-card {
     position: sticky;
     top: 82px;
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-default);
     border-radius: 12px;
     padding: 14px;
   }
@@ -104,7 +104,7 @@ const insightLinks = insights.map((entry) => ({
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--muted);
+    color: var(--text-tertiary);
     margin-bottom: 10px;
     font-weight: 700;
   }
@@ -119,14 +119,14 @@ const insightLinks = insights.map((entry) => ({
 
   .toc-list a {
     font-size: 0.84rem;
-    color: var(--ink-soft);
+    color: var(--text-secondary);
     padding: 0.3rem 0.45rem;
     border-radius: 8px;
   }
 
   .toc-list a:hover {
-    background: #eef4ff;
-    color: var(--ink);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
   }
 
   .insights-header {
@@ -139,7 +139,7 @@ const insightLinks = insights.map((entry) => ({
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--muted);
+    color: var(--text-tertiary);
     font-size: 0.72rem;
   }
 
@@ -152,7 +152,7 @@ const insightLinks = insights.map((entry) => ({
 
   .insights-header p {
     margin-top: 12px;
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 1.03rem;
     line-height: 1.72;
   }
@@ -166,8 +166,8 @@ const insightLinks = insights.map((entry) => ({
   .insight-card {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
-    border: 1px solid var(--line);
+    background: var(--bg-card);
+    border: 1px solid var(--line-default);
     border-radius: 16px;
     padding: 22px;
     transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
@@ -175,8 +175,8 @@ const insightLinks = insights.map((entry) => ({
 
   .insight-card:hover {
     transform: translateY(-2px);
-    border-color: var(--accent);
-    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+    border-color: var(--accent-primary);
+    box-shadow: 0 12px 24px rgba(191, 255, 0, 0.12);
   }
 
   .insight-top {
@@ -211,13 +211,13 @@ const insightLinks = insights.map((entry) => ({
   }
 
   .status.planned {
-    background: #fff4d7;
-    color: #8a4b08;
+    background: rgba(138, 75, 8, 0.15);
+    color: #d4a574;
   }
 
   .insight-card p {
     margin-top: 10px;
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 0.95rem;
     line-height: 1.68;
   }
@@ -240,7 +240,7 @@ const insightLinks = insights.map((entry) => ({
   .jump {
     margin-top: auto;
     padding-top: 16px;
-    color: var(--accent);
+    color: var(--accent-primary);
     font-size: 0.86rem;
     font-weight: 600;
   }

@@ -106,8 +106,8 @@ entries.forEach((entry) => {
   .toc-card {
     position: sticky;
     top: 82px;
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-default);
     border-radius: 12px;
     padding: 14px;
   }
@@ -116,7 +116,7 @@ entries.forEach((entry) => {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--muted);
+    color: var(--text-tertiary);
     margin-bottom: 10px;
     font-weight: 700;
   }
@@ -129,14 +129,14 @@ entries.forEach((entry) => {
 
   .toc-list a {
     font-size: 0.84rem;
-    color: var(--ink-soft);
+    color: var(--text-secondary);
     padding: 0.3rem 0.45rem;
     border-radius: 8px;
   }
 
   .toc-list a:hover {
-    background: #eef4ff;
-    color: var(--ink);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
   }
 
   .til-header {
@@ -149,7 +149,7 @@ entries.forEach((entry) => {
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--muted);
+    color: var(--text-tertiary);
     font-size: 0.72rem;
   }
 
@@ -162,7 +162,7 @@ entries.forEach((entry) => {
 
   .til-header p {
     margin-top: 12px;
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 1.03rem;
     line-height: 1.72;
   }
@@ -183,9 +183,9 @@ entries.forEach((entry) => {
     font-family: var(--font-display);
     font-size: 1.3rem;
     letter-spacing: -0.02em;
-    color: var(--ink);
+    color: var(--text-primary);
     padding-bottom: 8px;
-    border-bottom: 2px solid var(--line);
+    border-bottom: 2px solid var(--line-default);
   }
 
   .entries-list {
@@ -197,8 +197,8 @@ entries.forEach((entry) => {
   .til-card {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(246, 250, 255, 0.9));
-    border: 1px solid var(--line);
+    background: var(--bg-card);
+    border: 1px solid var(--line-default);
     border-radius: 12px;
     padding: 18px;
     transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
@@ -206,20 +206,20 @@ entries.forEach((entry) => {
 
   .til-card:hover {
     transform: translateY(-2px);
-    border-color: var(--accent);
-    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+    border-color: var(--accent-primary);
+    box-shadow: 0 12px 24px rgba(191, 255, 0, 0.12);
   }
 
   h3 {
     font-family: var(--font-display);
     font-size: 1.1rem;
     letter-spacing: -0.01em;
-    color: var(--ink);
+    color: var(--text-primary);
   }
 
   .til-card p {
     margin-top: 8px;
-    color: var(--muted);
+    color: var(--text-secondary);
     font-size: 0.93rem;
     line-height: 1.65;
   }
@@ -242,7 +242,7 @@ entries.forEach((entry) => {
   .jump {
     margin-top: auto;
     padding-top: 12px;
-    color: var(--accent);
+    color: var(--accent-primary);
     font-size: 0.86rem;
     font-weight: 600;
   }
@@ -250,10 +250,10 @@ entries.forEach((entry) => {
   .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: var(--muted);
-    background: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
+    background: var(--bg-elevated);
     border-radius: 12px;
-    border: 1px dashed var(--line);
+    border: 1px dashed var(--line-default);
   }
 
   @media (max-width: 900px) {
