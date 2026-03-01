@@ -1,8 +1,5 @@
 category: Framework
 projects:
-  - name: Nano Collective
-    description: Distributed collective communication operations for training.
-    status: TBD
   - name: Nano Torch
     description: Deep learning framework with PyTorch-like API.
     goals:
@@ -12,7 +9,7 @@ projects:
   - name: Nano Train
     repo: nano-train
     description: Learning-first distributed LLM training framework built around Megatron-style parallelism, covering TP, PP, EP, DP, ZeRO-1/2, and mixed precision on a DeepSeek-style model stack.
-    status: WIP
+    status: Done
     intro: |
       `nano-train` is a learning-first distributed LLM training repo built around Megatron-style parallelism. It started as a compact training sandbox and has gradually grown into a reusable runtime-backed system that now covers TP, PP, EP, DP, ZeRO-1/2, and mixed precision on a DeepSeek-style model stack.
 

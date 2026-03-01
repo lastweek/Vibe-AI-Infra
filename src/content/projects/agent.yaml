@@ -1,8 +1,9 @@
 category: Agent
 projects:
-  - name: Nano OpenCode
-    description: AI-powered code generation and analysis agent.
+  - name: Nano Coder
+    description: Tool-use agent system for code execution and development workflows.
     status: TBD
+    repo: nano-coder
   - name: Nano AgentEvolve
     description: A Self-Evolving Agentic Framework.
     status: TBD
