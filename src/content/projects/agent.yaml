@@ -7,6 +7,3 @@ projects:
   - name: Nano AgentEvolve
     description: A Self-Evolving Agentic Framework.
     status: TBD
-  - name: Nano Model NAS
-    description: Neural Architecture Search framework for automated model design.
-    status: TBD
