@@ -1,9 +1,51 @@
 category: Agent
 projects:
   - name: Nano Coder
-    description: Tool-use agent system for code execution and development workflows.
-    status: TBD
     repo: nano-coder
+    description: Minimal terminal-based coding agent with tool use, streaming answers, MCP support, and local subagents for code execution and development workflows.
+    status: Done
+    intro: |
+      `nano-coder` is a minimal terminal-based coding agent built in feature-focused steps from a minimal agent to a capable repo-workbench. It demonstrates how to build a practical tool-use agent system with streaming answers, MCP (Model Context Protocol) support, local subagents, and a skill system.
+
+      ## What Nano-Coder Is
+
+      - A terminal-first coding agent that helps with code tasks through tool use
+      - A streaming answer system that provides real-time feedback
+      - An extensible skill system for adding new capabilities
+      - A planning workflow with `/plan` command for complex tasks
+      - A reference implementation for building minimal but capable agents
+
+      ## Key Features
+
+      - **Terminal-first workflow**: Designed for command-line usage
+      - **Tool-based code tasks**: Read files, edit code, run commands
+      - **Streaming answers**: Real-time output as the agent thinks
+      - **MCP support**: Model Context Protocol for extended capabilities
+      - **Local subagents**: Specialized agents for specific tasks
+      - **Skill system**: Extensible command framework
+      - **Context compaction**: Efficient context management
+      - **Per-session logging**: Track agent behavior
+      - **Slash commands**: Quick access to common operations
+
+      ## Architecture
+
+      Built in feature-focused steps:
+      1. **Minimal agent**: Basic tool use and streaming
+      2. **Planning workflow**: `/plan` command for complex multi-step tasks
+      3. **Skill system**: Extensible command framework
+      4. **MCP integration**: Model Context Protocol support
+      5. **Local subagents**: Specialized helper agents
+
+      ## Development Journey
+
+      - Started as a minimal terminal agent with basic tool use
+      - Added streaming answers for real-time feedback
+      - Implemented `/plan` workflow for complex tasks
+      - Built extensible skill system
+      - Added MCP support for extended capabilities
+      - Created local subagents for specialized tasks
+
+      This project demonstrates how to build a practical coding agent from first principles, focusing on minimal but functional implementations rather than complex frameworks.
   - name: Nano AgentEvolve
     description: A Self-Evolving Agentic Framework.
     status: TBD
